@@ -7,14 +7,14 @@ import { useTonConnect } from './useTonConnect';
 
 export function Withdraw() {
     const { sender } = useTonConnect()
-    const amountJettons = 10 * 10 ** jettonDecimals
+    const amountJettons = 100 * 10 ** jettonDecimals
 
     const send = async () => {
         const client = new TonClient({ endpoint: await getHttpEndpoint({network: network}) })
         const hamsterMasterAddress = Address.parse(humsterJettonMaster)
         const jettonMaster = client.open(JettonMaster.create(hamsterMasterAddress))
         const garantJettonWallet = await jettonMaster.getWalletAddress(Address.parse(GarantAddress))
-
+        console.log(garantJettonWallet.toString())
         const message = { $$type: 'Withdraw', amount: amountJettons, jettonWalletAddress: garantJettonWallet }
         const jettonContract = client.open(Garant.fromAddress(Address.parse(GarantAddress)))
         jettonContract.send(sender, { value: toNano("0.1") }, message)
