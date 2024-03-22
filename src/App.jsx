@@ -1,19 +1,18 @@
 import './App.css'
 import { TonConnectButton } from '@tonconnect/ui-react'
 import { Withdraw } from './usecase/withdraw'
-
-const buttonStyle = {
-  position: 'absolute',
-  top: '35px',
-  right: '300px'
-}
+import { SendNft } from './usecase/sendNft'
+import { buttonStyle, contentStyle } from './style'
 
 function App() {
 	return (
 		<div className='App'>
 			<main>
 				<TonConnectButton style={buttonStyle}/>
-				<Withdraw />
+				<div style={contentStyle}>
+					<SendNft />
+					<Withdraw />
+				</div>
 			</main>
 		</div>
 	)
