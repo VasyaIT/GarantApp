@@ -22,5 +22,6 @@ export function useTonConnect() {
 			address: wallet?.account?.address ? Address.parse(wallet?.account?.address) : undefined,
 		},
 		network: wallet?.account.chain ?? null,
+		walletAddress: wallet?.account.address,
 	}
 }

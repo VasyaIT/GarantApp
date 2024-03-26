@@ -5,9 +5,10 @@ import { getHttpEndpoint } from '@orbs-network/ton-access';
 import { Garant } from "../../build/Garant/tact_Garant";
 import { GarantAddress, humsterJettonMaster, jettonDecimals, network } from '../const';
 import { useTonConnect } from './useTonConnect';
-import { addressInputStyle } from '../style';
 
 export function Withdraw() {
+    // Withdraw jettons ($HMSTR) from contract. Example, owner want withdraw the commission
+
     const [amount, setAmount] = useState('');
     const { sender } = useTonConnect()
     const amountJettons = amount * 10 ** jettonDecimals
@@ -24,9 +25,9 @@ export function Withdraw() {
     }
 
     return (
-        <div>
-            <input placeholder='NFT address' type="text" value={amount} 
-                onChange={e => setAmount(e.target.value)} style={addressInputStyle}
+        <div style={{marginRight: '7em',  marginBottom: '3em'}}>
+            <input className='input-text' placeholder='Количество $HMSTR' type="text" value={amount} 
+                onChange={e => setAmount(e.target.value)}
             />
             <br />
             <button className='withdraw-btn' onClick={send}>Вывести $HMSTR</button>

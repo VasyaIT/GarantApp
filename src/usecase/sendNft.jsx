@@ -1,35 +1,34 @@
 import { useState } from 'react';
-import { Address, toNano } from '@ton/core'
-import { TonClient } from '@ton/ton';
-import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { Garant } from "../../build/Garant/tact_Garant";
-import { GarantAddress, network } from '../const';
+import { Address, toNano, beginCell } from '@ton/core'
+import { GarantAddress } from '../const';
 import { useTonConnect } from './useTonConnect';
-import { addressInputStyle } from '../style'
 
 export function SendNft() {
-    const { sender } = useTonConnect()
-    const [walletAddress, setWalletAddress] = useState('');
+    // Sending NFT to contract
+
+    const { sender, walletAddress } = useTonConnect()
     const [nftAddress, setNftAddress] = useState('');
 
     const send = async () => {
-        const client = new TonClient({ endpoint: await getHttpEndpoint({network: network}) })
-        const message = { $$type: 'SendNft', nftAddress: Address.parse(nftAddress), newOwner: Address.parse(walletAddress) }
-        const jettonContract = client.open(Garant.fromAddress(Address.parse(GarantAddress)))
-        jettonContract.send(sender, { value: toNano("0.1") }, message)
+        const message = beginCell()
+            .storeUint(0x5fcc3d14, 32)
+            .storeUint(0, 64)
+            .storeAddress(Address.parse(GarantAddress))
+            .storeAddress(Address.parse(walletAddress))
+            .storeBit(false)
+            .storeCoins(toNano("0.05"))
+            .storeUint(0, 1)
+            .endCell()
+        sender.send({to: Address.parse(nftAddress), value: toNano("0.1"), body: message})
     }
 
-  return (
-        <div style={{marginRight: '20em'}}>
-            <input placeholder='NFT address' type="text" value={nftAddress} 
-                onChange={e => setNftAddress(e.target.value)} style={addressInputStyle}
-            />
-            <br />
-            <input className='addressInput' placeholder='Wallet address' type="text" value={walletAddress} 
-                onChange={e => setWalletAddress(e.target.value)}  style={addressInputStyle}
+    return (
+        <div style={{marginRight: '7em',  marginBottom: '3em'}}>
+            <input className='input-text' placeholder='Адрес NFT' type="text" value={nftAddress} 
+                onChange={e => setNftAddress(e.target.value)}
             />
             <br />
             <button className='sendNft' onClick={send}>Отправить NFT</button>
         </div>
-  );
+    );
 }

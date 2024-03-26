@@ -44,3 +44,18 @@
 body {
   background-color: rgb(112, 0, 186);
 }
+
+.input-text {
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0.8rem 1.6rem;
+  color: inherit;
+  width: 100%;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: inherit;
+  line-height: 1.1;
+  border: none;
+  border-radius: 0.4rem;
+  transition: box-shadow 300ms;
+}

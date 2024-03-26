@@ -1,8 +1,3 @@
-export const addressInputStyle = {
-	fontSize: '20px',
-	marginBottom: '20px',
-}
-
 export const buttonStyle = {
 	position: 'absolute',
 	top: '35px',
@@ -10,5 +5,16 @@ export const buttonStyle = {
 }
 
 export const contentStyle = {
+	marginTop: '2em',
 	display: 'flex',
+}
+
+export const rightContentStyle = {
+	display: 'block',
+	marginLeft: '40px',
+}
+
+export const leftContentStyle = {
+	display: 'block',
+	marginRight: '40px',
 }
