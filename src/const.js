@@ -1,6 +1,6 @@
 export const humsterJettonMaster = 'EQBCNo-ADkS42tZUBGfqhNwpPfyNfaptZLqWs8e9VpDMQpF4'
 export const jettonDecimals = 9
-export const GarantAddress = 'EQBKVHd4u1sPdlIFda20pb2Cp8lZ5o1t_tX9BC82VOlHspp2'
+export const GarantAddress = 'EQCQbi5c7BynA-gKr6oaTpIRb_cEiI19Tn92n5EgXgOxA4g-'
 export const network = 'testnet'
 export const jettonTransactionFee = 1000
 export const tonTransactionFee = 0.5
