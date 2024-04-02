@@ -10,6 +10,16 @@
 }
 
 ;;
+;; Type: Context
+;; TLB: _ bounced:bool sender:address value:int257 raw:^slice = Context
+;;
+
+_ $Context$_get_sender((int, slice, int, slice) v) inline {
+    var (v'bounced, v'sender, v'value, v'raw) = v;
+    return v'sender;
+}
+
+;;
 ;; Type: SendParameters
 ;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
 ;;
@@ -24,14 +34,6 @@
 
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_body_value_mode(slice to, cell body, int value, int mode) inline {
     return (true, to, value, mode, body, null(), null());
-}
-
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode(slice to, int value, int mode) inline {
-    return (true, to, value, mode, null(), null(), null());
-}
-
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_code_data(slice to, int value, int mode, cell code, cell data) inline {
-    return (true, to, value, mode, null(), code, data);
 }
 
 ;;
@@ -121,126 +123,82 @@ cell $NftTransfer$_store_cell((int, slice, slice, cell, int, slice) v) inline {
 }
 
 ;;
-;; Type: OwnershipAssigned
-;; Header: 0x05138d91
-;; TLB: ownership_assigned#05138d91 query_id:uint64 prev_owner:address forward_payload:remainder<slice> = OwnershipAssigned
+;; Type: TokenNotification
+;; Header: 0x7362d09c
+;; TLB: token_notification#7362d09c queryId:uint64 amount:coins from:address forwardPayload:remainder<slice> = TokenNotification
 ;;
 
-(slice, ((int, slice, slice))) $OwnershipAssigned$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 85167505);
-    var v'query_id = sc_0~load_uint(64);
-    var v'prev_owner = sc_0~__tact_load_address();
-    var v'forward_payload = sc_0;
-    return (sc_0, (v'query_id, v'prev_owner, v'forward_payload));
-}
-
-;;
-;; Type: Withdraw
-;; Header: 0x3a37ce0d
-;; TLB: withdraw#3a37ce0d amount:coins jettonWalletAddress:address = Withdraw
-;;
-
-(slice, ((int, slice))) $Withdraw$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 976735757);
+(slice, ((int, int, slice, slice))) $TokenNotification$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1935855772);
+    var v'queryId = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
-    var v'jettonWalletAddress = sc_0~__tact_load_address();
-    return (sc_0, (v'amount, v'jettonWalletAddress));
+    var v'from = sc_0~__tact_load_address();
+    var v'forwardPayload = sc_0;
+    return (sc_0, (v'queryId, v'amount, v'from, v'forwardPayload));
 }
 
 ;;
-;; Type: WithdrawTon
-;; Header: 0xfabed8e6
-;; TLB: withdraw_ton#fabed8e6 amount:coins = WithdrawTon
+;; Type: Data
+;; TLB: _ owner:address amount:int257 isTon:bool nftAddress:address = Data
 ;;
 
-(slice, ((int))) $WithdrawTon$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 4206811366);
-    var v'amount = sc_0~load_coins();
-    return (sc_0, (v'amount));
+(slice, int, int, slice) $Data$_to_external(((slice, int, int, slice)) v) inline {
+    var (v'owner, v'amount, v'isTon, v'nftAddress) = v; 
+    return (v'owner, v'amount, v'isTon, v'nftAddress);
 }
 
-;;
-;; Type: WithdrawNft
-;; Header: 0x7fd4a980
-;; TLB: withdraw_nft#7fd4a980 nftAddress:address newOwner:address = WithdrawNft
-;;
-
-(slice, ((slice, slice))) $WithdrawNft$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 2144643456);
-    var v'nftAddress = sc_0~__tact_load_address();
-    var v'newOwner = sc_0~__tact_load_address();
-    return (sc_0, (v'nftAddress, v'newOwner));
+((slice, int, int, slice)) $Data$_constructor_owner_amount_isTon_nftAddress(slice owner, int amount, int isTon, slice nftAddress) inline {
+    return (owner, amount, isTon, nftAddress);
 }
 
 ;;
 ;; Type: GarantWallet
 ;;
 
-builder $GarantWallet$init$_store(builder build_0, (slice, int, int, slice) v) inline {
+builder $GarantWallet$_store(builder build_0, (slice, int, int, slice) v) inline {
     var (v'owner, v'amount, v'isTon, v'nftAddress) = v;
     build_0 = __tact_store_address(build_0, v'owner);
-    build_0 = build_0.store_int(v'amount, 257);
+    build_0 = build_0.store_coins(v'amount);
     build_0 = build_0.store_int(v'isTon, 1);
     build_0 = __tact_store_address(build_0, v'nftAddress);
     return build_0;
 }
 
-(cell, cell) $GarantWallet$_init_child(cell sys', slice $owner, int $amount, int $isTon, slice $nftAddress) inline_ref {
-    slice sc' = sys'.begin_parse();
-    cell source = sc'~load_dict();
-    cell contracts = new_dict();
-    
-    ;; Contract Code: GarantWallet
-    cell mine = __tact_dict_get_code(source, 40592);
-    contracts = __tact_dict_set_code(contracts, 40592, mine);
-    
-    ;; Build cell
-    builder b = begin_cell();
-    b = b.store_ref(begin_cell().store_dict(contracts).end_cell());
-    b = b.store_int(false, 1);
-    b = $GarantWallet$init$_store(b, ($owner, $amount, $isTon, $nftAddress));
-    return (mine, b.end_cell());
-}
-
-;;
-;; Type: Garant
-;;
-
-builder $Garant$_store(builder build_0, (slice) v) inline {
-    var (v'owner) = v;
-    build_0 = __tact_store_address(build_0, v'owner);
-    return build_0;
-}
-
-(slice, ((slice))) $Garant$_load(slice sc_0) inline {
+(slice, ((slice, int, int, slice))) $GarantWallet$_load(slice sc_0) inline {
     var v'owner = sc_0~__tact_load_address();
-    return (sc_0, (v'owner));
+    var v'amount = sc_0~load_coins();
+    var v'isTon = sc_0~load_int(1);
+    var v'nftAddress = sc_0~__tact_load_address();
+    return (sc_0, (v'owner, v'amount, v'isTon, v'nftAddress));
 }
 
-(slice, ((slice))) $Garant$init$_load(slice sc_0) inline {
+(slice, ((slice, int, int, slice))) $GarantWallet$init$_load(slice sc_0) inline {
     var v'owner = sc_0~__tact_load_address();
-    return (sc_0, (v'owner));
+    var v'amount = sc_0~load_int(257);
+    var v'isTon = sc_0~load_int(1);
+    var v'nftAddress = sc_0~__tact_load_address();
+    return (sc_0, (v'owner, v'amount, v'isTon, v'nftAddress));
 }
 
-(slice) $Garant$_contract_load() impure inline_ref {
+(slice, int, int, slice) $GarantWallet$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
     if ($loaded) {
-        return $sc~$Garant$_load();
+        return $sc~$GarantWallet$_load();
     } else {
         ;; Allow only workchain deployments
         throw_unless(137, my_address().preload_uint(11) == 1024);
-        (slice owner) = $sc~$Garant$init$_load();
+        (slice owner, int amount, int isTon, slice nftAddress) = $sc~$GarantWallet$init$_load();
         $sc.end_parse();
-        return $Garant$_contract_init(owner);
+        return $GarantWallet$_contract_init(owner, amount, isTon, nftAddress);
     }
 }
 
-() $Garant$_contract_store((slice) v) impure inline {
+() $GarantWallet$_contract_store((slice, int, int, slice) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);
-    b = $Garant$_store(b, v);
+    b = $GarantWallet$_store(b, v);
     set_data(b.end_cell());
 }

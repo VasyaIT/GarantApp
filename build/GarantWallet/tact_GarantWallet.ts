@@ -321,155 +321,6 @@ function dictValueParserFactoryDeploy(): DictionaryValue<FactoryDeploy> {
     }
 }
 
-export type ChangeOwner = {
-    $$type: 'ChangeOwner';
-    queryId: bigint;
-    newOwner: Address;
-}
-
-export function storeChangeOwner(src: ChangeOwner) {
-    return (builder: Builder) => {
-        let b_0 = builder;
-        b_0.storeUint(2174598809, 32);
-        b_0.storeUint(src.queryId, 64);
-        b_0.storeAddress(src.newOwner);
-    };
-}
-
-export function loadChangeOwner(slice: Slice) {
-    let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2174598809) { throw Error('Invalid prefix'); }
-    let _queryId = sc_0.loadUintBig(64);
-    let _newOwner = sc_0.loadAddress();
-    return { $$type: 'ChangeOwner' as const, queryId: _queryId, newOwner: _newOwner };
-}
-
-function loadTupleChangeOwner(source: TupleReader) {
-    let _queryId = source.readBigNumber();
-    let _newOwner = source.readAddress();
-    return { $$type: 'ChangeOwner' as const, queryId: _queryId, newOwner: _newOwner };
-}
-
-function storeTupleChangeOwner(source: ChangeOwner) {
-    let builder = new TupleBuilder();
-    builder.writeNumber(source.queryId);
-    builder.writeAddress(source.newOwner);
-    return builder.build();
-}
-
-function dictValueParserChangeOwner(): DictionaryValue<ChangeOwner> {
-    return {
-        serialize: (src, buidler) => {
-            buidler.storeRef(beginCell().store(storeChangeOwner(src)).endCell());
-        },
-        parse: (src) => {
-            return loadChangeOwner(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type ChangeOwnerOk = {
-    $$type: 'ChangeOwnerOk';
-    queryId: bigint;
-    newOwner: Address;
-}
-
-export function storeChangeOwnerOk(src: ChangeOwnerOk) {
-    return (builder: Builder) => {
-        let b_0 = builder;
-        b_0.storeUint(846932810, 32);
-        b_0.storeUint(src.queryId, 64);
-        b_0.storeAddress(src.newOwner);
-    };
-}
-
-export function loadChangeOwnerOk(slice: Slice) {
-    let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 846932810) { throw Error('Invalid prefix'); }
-    let _queryId = sc_0.loadUintBig(64);
-    let _newOwner = sc_0.loadAddress();
-    return { $$type: 'ChangeOwnerOk' as const, queryId: _queryId, newOwner: _newOwner };
-}
-
-function loadTupleChangeOwnerOk(source: TupleReader) {
-    let _queryId = source.readBigNumber();
-    let _newOwner = source.readAddress();
-    return { $$type: 'ChangeOwnerOk' as const, queryId: _queryId, newOwner: _newOwner };
-}
-
-function storeTupleChangeOwnerOk(source: ChangeOwnerOk) {
-    let builder = new TupleBuilder();
-    builder.writeNumber(source.queryId);
-    builder.writeAddress(source.newOwner);
-    return builder.build();
-}
-
-function dictValueParserChangeOwnerOk(): DictionaryValue<ChangeOwnerOk> {
-    return {
-        serialize: (src, buidler) => {
-            buidler.storeRef(beginCell().store(storeChangeOwnerOk(src)).endCell());
-        },
-        parse: (src) => {
-            return loadChangeOwnerOk(src.loadRef().beginParse());
-        }
-    }
-}
-
-export type Data = {
-    $$type: 'Data';
-    owner: Address;
-    amount: bigint;
-    isTon: boolean;
-    nftAddress: Address;
-}
-
-export function storeData(src: Data) {
-    return (builder: Builder) => {
-        let b_0 = builder;
-        b_0.storeAddress(src.owner);
-        b_0.storeInt(src.amount, 257);
-        b_0.storeBit(src.isTon);
-        b_0.storeAddress(src.nftAddress);
-    };
-}
-
-export function loadData(slice: Slice) {
-    let sc_0 = slice;
-    let _owner = sc_0.loadAddress();
-    let _amount = sc_0.loadIntBig(257);
-    let _isTon = sc_0.loadBit();
-    let _nftAddress = sc_0.loadAddress();
-    return { $$type: 'Data' as const, owner: _owner, amount: _amount, isTon: _isTon, nftAddress: _nftAddress };
-}
-
-function loadTupleData(source: TupleReader) {
-    let _owner = source.readAddress();
-    let _amount = source.readBigNumber();
-    let _isTon = source.readBoolean();
-    let _nftAddress = source.readAddress();
-    return { $$type: 'Data' as const, owner: _owner, amount: _amount, isTon: _isTon, nftAddress: _nftAddress };
-}
-
-function storeTupleData(source: Data) {
-    let builder = new TupleBuilder();
-    builder.writeAddress(source.owner);
-    builder.writeNumber(source.amount);
-    builder.writeBoolean(source.isTon);
-    builder.writeAddress(source.nftAddress);
-    return builder.build();
-}
-
-function dictValueParserData(): DictionaryValue<Data> {
-    return {
-        serialize: (src, buidler) => {
-            buidler.storeRef(beginCell().store(storeData(src)).endCell());
-        },
-        parse: (src) => {
-            return loadData(src.loadRef().beginParse());
-        }
-    }
-}
-
 export type TokenTransfer = {
     $$type: 'TokenTransfer';
     query_id: bigint;
@@ -1000,30 +851,91 @@ function dictValueParserSendJetton(): DictionaryValue<SendJetton> {
     }
 }
 
- type Garant_init_args = {
-    $$type: 'Garant_init_args';
+export type Data = {
+    $$type: 'Data';
     owner: Address;
+    amount: bigint;
+    isTon: boolean;
+    nftAddress: Address;
 }
 
-function initGarant_init_args(src: Garant_init_args) {
+export function storeData(src: Data) {
     return (builder: Builder) => {
         let b_0 = builder;
         b_0.storeAddress(src.owner);
+        b_0.storeInt(src.amount, 257);
+        b_0.storeBit(src.isTon);
+        b_0.storeAddress(src.nftAddress);
     };
 }
 
-async function Garant_init(owner: Address) {
-    const __code = Cell.fromBase64('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');
-    const __system = Cell.fromBase64('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');
+export function loadData(slice: Slice) {
+    let sc_0 = slice;
+    let _owner = sc_0.loadAddress();
+    let _amount = sc_0.loadIntBig(257);
+    let _isTon = sc_0.loadBit();
+    let _nftAddress = sc_0.loadAddress();
+    return { $$type: 'Data' as const, owner: _owner, amount: _amount, isTon: _isTon, nftAddress: _nftAddress };
+}
+
+function loadTupleData(source: TupleReader) {
+    let _owner = source.readAddress();
+    let _amount = source.readBigNumber();
+    let _isTon = source.readBoolean();
+    let _nftAddress = source.readAddress();
+    return { $$type: 'Data' as const, owner: _owner, amount: _amount, isTon: _isTon, nftAddress: _nftAddress };
+}
+
+function storeTupleData(source: Data) {
+    let builder = new TupleBuilder();
+    builder.writeAddress(source.owner);
+    builder.writeNumber(source.amount);
+    builder.writeBoolean(source.isTon);
+    builder.writeAddress(source.nftAddress);
+    return builder.build();
+}
+
+function dictValueParserData(): DictionaryValue<Data> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeData(src)).endCell());
+        },
+        parse: (src) => {
+            return loadData(src.loadRef().beginParse());
+        }
+    }
+}
+
+ type GarantWallet_init_args = {
+    $$type: 'GarantWallet_init_args';
+    owner: Address;
+    amount: bigint;
+    isTon: boolean;
+    nftAddress: Address;
+}
+
+function initGarantWallet_init_args(src: GarantWallet_init_args) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeAddress(src.owner);
+        b_0.storeInt(src.amount, 257);
+        b_0.storeBit(src.isTon);
+        b_0.storeAddress(src.nftAddress);
+    };
+}
+
+async function GarantWallet_init(owner: Address, amount: bigint, isTon: boolean, nftAddress: Address) {
+    const __code = Cell.fromBase64('te6ccgECGQEABTUAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCFAQFAgFYEBEE4O2i7fsBkjB/4HAh10nCH5UwINcLH94gghBzYtCcuo64MNMfAYIQc2LQnLry4IHTP/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFQTAxAjbBTgIMAAItdJwSGw4wIgghCUapi2uuMCwAAGBwgJAKbI+EMBzH8BygBVMFBDINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WAfoCEsoAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFsntVAOSMDIjwACPvoEP1lEVvvL0+EFvJBAjXwMVFEMw2zxwyMlTEcjLAMnQJgRRWAQQOlCiyFVg2zzJ+EIBcIBCfwQDbW3bPFUCkVvifwwKDgE4W/hBbyQwMiPA/46MggCMGVElvhLy9Ns8kVvifwwBUDDTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH8LAYaOvfkBgvBCtfAE9yGyDUhe54NTZ6Y1wp0CNoSVsuXyeg+QZjlG0LqOlfhBbyRbggDZATIlxwXy9CPbPH/bMeCRMOJwDADeghAPin6lUAjLHxbLP1AE+gJYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASBulTBwAcsBjh4g10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbiIW6zlX8BygDMlHAyygDiAfoCAc8WATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPA4CQnDIyVMRyMsAydAoEEVVIMhVUNs8yXCAQiMDf1UwbW3bPA0OAMKCEF/MPRRQB8sfFcs/UAMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WIW6zlX8BygDMlHAyygDiAfoCAc8WAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AA8AmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwCASASEwIBSBcYAhG07Ftnm2eNiJAUFQCVt3owTgudh6ullc9j0J2HOslQo2zQThO6xqWlbI+WZFp15b++LEcwTgQKuANwDOxymcsHVcjktlhwThOy6ctWadluZ0HSzbKM3RSQAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfoA0gD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIFEMwbBTg+CjXCwqDCbry4IkWAAhUcyEjAJr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAYEBAdcA0gD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIFEMwBNFVAgARsK+7UTQ0gABgAHWybuNDVpcGZzOi8vUW1jU0ptWFR1cnpMOVY3TDJHcXRnWG5DVVVqQnpHQTZFSnJaZlNpblNtZE1qTYIA==');
+    const __system = Cell.fromBase64('te6cckECGwEABT8AAQHAAQEFoT0hAgEU/wD0pBP0vPLICwMCAWIMBAIBWAgFAgFIBwYAdbJu40NWlwZnM6Ly9RbWNTSm1YVHVyekw5VjdMMkdxdGdYbkNVVWpCekdBNkVKclpmU2luU21kTWpNggABGwr7tRNDSAAGACASAKCQCVt3owTgudh6ullc9j0J2HOslQo2zQThO6xqWlbI+WZFp15b++LEcwTgQKuANwDOxymcsHVcjktlhwThOy6ctWadluZ0HSzbKM3RSQAhG07Ftnm2eNiJAZCwAIVHMhIwN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLgghkODQCmyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgH6AhLKAAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbJ7VQE4O2i7fsBkjB/4HAh10nCH5UwINcLH94gghBzYtCcuo64MNMfAYIQc2LQnLry4IHTP/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFQTAxAjbBTgIMAAItdJwSGw4wIgghCUapi2uuMCwAATEhAPAYaOvfkBgvBCtfAE9yGyDUhe54NTZ6Y1wp0CNoSVsuXyeg+QZjlG0LqOlfhBbyRbggDZATIlxwXy9CPbPH/bMeCRMOJwFQFQMNMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8fxEBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8FgE4W/hBbyQwMiPA/46MggCMGVElvhLy9Ns8kVvifxUDkjAyI8AAj76BD9ZRFb7y9PhBbyQQI18DFRRDMNs8cMjJUxHIywDJ0CYEUVgEEDpQoshVYNs8yfhCAXCAQn8EA21t2zxVApFb4n8VFBYA3oIQD4p+pVAIyx8Wyz9QBPoCWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEgbpUwcAHLAY4eINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8W4iFus5V/AcoAzJRwMsoA4gH6AgHPFgJCcMjJUxHIywDJ0CgQRVUgyFVQ2zzJcIBCIwN/VTBtbds8GBYByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAFwCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzADCghBfzD0UUAfLHxXLP1ADINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFiFus5V/AcoAzJRwMsoA4gH6AgHPFgHA7UTQ1AH4Y9IAAY5I+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6ANIA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBRDMGwU4Pgo1wsKgwm68uCJGgCa+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAGBAQHXANIA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBRDMATRVQIFAIhn');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
-    initGarant_init_args({ $$type: 'Garant_init_args', owner })(builder);
+    initGarantWallet_init_args({ $$type: 'GarantWallet_init_args', owner, amount, isTon, nftAddress })(builder);
     const __data = builder.endCell();
     return { code: __code, data: __data };
 }
 
-const Garant_errors: { [key: number]: { message: string } } = {
+const GarantWallet_errors: { [key: number]: { message: string } } = {
     2: { message: `Stack undeflow` },
     3: { message: `Stack overflow` },
     4: { message: `Integer overflow` },
@@ -1053,16 +965,13 @@ const Garant_errors: { [key: number]: { message: string } } = {
     55553: { message: `Forbidden` },
 }
 
-const Garant_types: ABIType[] = [
+const GarantWallet_types: ABIType[] = [
     {"name":"StateInit","header":null,"fields":[{"name":"code","type":{"kind":"simple","type":"cell","optional":false}},{"name":"data","type":{"kind":"simple","type":"cell","optional":false}}]},
     {"name":"Context","header":null,"fields":[{"name":"bounced","type":{"kind":"simple","type":"bool","optional":false}},{"name":"sender","type":{"kind":"simple","type":"address","optional":false}},{"name":"value","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"raw","type":{"kind":"simple","type":"slice","optional":false}}]},
     {"name":"SendParameters","header":null,"fields":[{"name":"bounce","type":{"kind":"simple","type":"bool","optional":false}},{"name":"to","type":{"kind":"simple","type":"address","optional":false}},{"name":"value","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"mode","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"body","type":{"kind":"simple","type":"cell","optional":true}},{"name":"code","type":{"kind":"simple","type":"cell","optional":true}},{"name":"data","type":{"kind":"simple","type":"cell","optional":true}}]},
     {"name":"Deploy","header":2490013878,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"DeployOk","header":2952335191,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
-    {"name":"ChangeOwner","header":2174598809,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
-    {"name":"ChangeOwnerOk","header":846932810,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
-    {"name":"Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"amount","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"isTon","type":{"kind":"simple","type":"bool","optional":false}},{"name":"nftAddress","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"TokenTransfer","header":260734629,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"response_destination","type":{"kind":"simple","type":"address","optional":true}},{"name":"custom_payload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forward_ton_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"NftTransfer","header":1607220500,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"new_owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"response_destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"custom_payload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forward_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"TokenNotification","header":1935855772,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"from","type":{"kind":"simple","type":"address","optional":false}},{"name":"forwardPayload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
@@ -1073,45 +982,43 @@ const Garant_types: ABIType[] = [
     {"name":"SendNft","header":2777898148,"fields":[{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}},{"name":"nftAddress","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"SendTon","header":643542012,"fields":[{"name":"toAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
     {"name":"SendJetton","header":1423420830,"fields":[{"name":"jettonWalletAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"toAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
+    {"name":"Data","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"amount","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"isTon","type":{"kind":"simple","type":"bool","optional":false}},{"name":"nftAddress","type":{"kind":"simple","type":"address","optional":false}}]},
 ]
 
-const Garant_getters: ABIGetter[] = [
-    {"name":"balance","arguments":[],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
-    {"name":"owner","arguments":[],"returnType":{"kind":"simple","type":"address","optional":false}},
+const GarantWallet_getters: ABIGetter[] = [
+    {"name":"data","arguments":[],"returnType":{"kind":"simple","type":"Data","optional":false}},
 ]
 
-const Garant_receivers: ABIReceiver[] = [
-    {"receiver":"internal","message":{"kind":"typed","type":"Withdraw"}},
-    {"receiver":"internal","message":{"kind":"typed","type":"WithdrawTon"}},
-    {"receiver":"internal","message":{"kind":"typed","type":"WithdrawNft"}},
-    {"receiver":"internal","message":{"kind":"typed","type":"OwnershipAssigned"}},
+const GarantWallet_receivers: ABIReceiver[] = [
+    {"receiver":"internal","message":{"kind":"typed","type":"TokenNotification"}},
+    {"receiver":"internal","message":{"kind":"text","text":"Cancel"}},
     {"receiver":"internal","message":{"kind":"empty"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
 
-export class Garant implements Contract {
+export class GarantWallet implements Contract {
     
-    static async init(owner: Address) {
-        return await Garant_init(owner);
+    static async init(owner: Address, amount: bigint, isTon: boolean, nftAddress: Address) {
+        return await GarantWallet_init(owner, amount, isTon, nftAddress);
     }
     
-    static async fromInit(owner: Address) {
-        const init = await Garant_init(owner);
+    static async fromInit(owner: Address, amount: bigint, isTon: boolean, nftAddress: Address) {
+        const init = await GarantWallet_init(owner, amount, isTon, nftAddress);
         const address = contractAddress(0, init);
-        return new Garant(address, init);
+        return new GarantWallet(address, init);
     }
     
     static fromAddress(address: Address) {
-        return new Garant(address);
+        return new GarantWallet(address);
     }
     
     readonly address: Address; 
     readonly init?: { code: Cell, data: Cell };
     readonly abi: ContractABI = {
-        types:  Garant_types,
-        getters: Garant_getters,
-        receivers: Garant_receivers,
-        errors: Garant_errors,
+        types:  GarantWallet_types,
+        getters: GarantWallet_getters,
+        receivers: GarantWallet_receivers,
+        errors: GarantWallet_errors,
     };
     
     private constructor(address: Address, init?: { code: Cell, data: Cell }) {
@@ -1119,20 +1026,14 @@ export class Garant implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: Withdraw | WithdrawTon | WithdrawNft | OwnershipAssigned | null | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: TokenNotification | 'Cancel' | null | Deploy) {
         
         let body: Cell | null = null;
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Withdraw') {
-            body = beginCell().store(storeWithdraw(message)).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'TokenNotification') {
+            body = beginCell().store(storeTokenNotification(message)).endCell();
         }
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'WithdrawTon') {
-            body = beginCell().store(storeWithdrawTon(message)).endCell();
-        }
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'WithdrawNft') {
-            body = beginCell().store(storeWithdrawNft(message)).endCell();
-        }
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'OwnershipAssigned') {
-            body = beginCell().store(storeOwnershipAssigned(message)).endCell();
+        if (message === 'Cancel') {
+            body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
         }
         if (message === null) {
             body = new Cell();
@@ -1146,17 +1047,10 @@ export class Garant implements Contract {
         
     }
     
-    async getBalance(provider: ContractProvider) {
+    async getData(provider: ContractProvider) {
         let builder = new TupleBuilder();
-        let source = (await provider.get('balance', builder.build())).stack;
-        let result = source.readBigNumber();
-        return result;
-    }
-    
-    async getOwner(provider: ContractProvider) {
-        let builder = new TupleBuilder();
-        let source = (await provider.get('owner', builder.build())).stack;
-        let result = source.readAddress();
+        let source = (await provider.get('data', builder.build())).stack;
+        const result = loadTupleData(source);
         return result;
     }
     

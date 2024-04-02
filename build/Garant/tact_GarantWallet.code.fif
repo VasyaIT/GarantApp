@@ -3,16 +3,12 @@ PROGRAM{
   DECLPROC __tact_load_address
   DECLPROC __tact_store_address
   DECLPROC __tact_store_address_opt
-  DECLPROC __tact_create_address
-  DECLPROC __tact_compute_contract_address
   DECLPROC __tact_my_balance
   DECLPROC __tact_not_null
   DECLPROC __tact_context_get
   DECLPROC __tact_context_get_sender
   DECLPROC __tact_store_bool
   DECLPROC __tact_slice_eq_bits
-  DECLPROC __tact_dict_set_code
-  DECLPROC __tact_dict_get_code
   DECLPROC $Deploy$_load
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
@@ -20,48 +16,38 @@ PROGRAM{
   DECLPROC $TokenTransfer$_store_cell
   DECLPROC $NftTransfer$_store
   DECLPROC $NftTransfer$_store_cell
-  DECLPROC $OwnershipAssigned$_load
-  DECLPROC $Withdraw$_load
-  DECLPROC $WithdrawTon$_load
-  DECLPROC $WithdrawNft$_load
-  DECLPROC $Garant$_store
-  DECLPROC $Garant$_load
+  DECLPROC $TokenNotification$_load
+  DECLPROC $GarantWallet$_store
+  DECLPROC $GarantWallet$_load
   DECLPROC $StateInit$_not_null
-  DECLPROC $GarantWallet$init$_store
-  DECLPROC $Garant$init$_load
-  DECLPROC $Garant$_contract_init
-  DECLPROC $Garant$_contract_load
-  DECLPROC $Garant$_contract_store
+  DECLPROC $Context$_get_sender
+  DECLPROC $Data$_to_external
+  DECLPROC $GarantWallet$init$_load
+  DECLPROC $GarantWallet$_contract_init
+  DECLPROC $GarantWallet$_contract_load
+  DECLPROC $GarantWallet$_contract_store
   DECLPROC $global_emptyCell
-  DECLPROC $global_contractAddress
   DECLPROC $global_send
-  DECLPROC $GarantWallet$_init_child
   DECLPROC $NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload
   DECLPROC $SendParameters$_constructor_to_value_mode_body
+  DECLPROC $GarantWallet$_fun_sendNft
+  DECLPROC $Data$_constructor_owner_amount_isTon_nftAddress
+  DECLPROC $GarantWallet$_fun_data
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
-  DECLPROC $Garant$_fun_balance
-  DECLPROC $Garant$_fun_forward
-  DECLPROC $Garant$_fun_reply
-  DECLPROC $Garant$_fun_notify
-  DECLPROC $Garant$_fun_requireOwner
-  DECLPROC $Garant$_fun_owner
+  DECLPROC $GarantWallet$_fun_forward
+  DECLPROC $GarantWallet$_fun_notify
   DECLPROC $TokenTransfer$_constructor_query_id_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload
   DECLPROC $SendParameters$_constructor_to_body_value_mode
-  DECLPROC $SendParameters$_constructor_to_value_mode
-  DECLPROC $SendParameters$_constructor_to_value_mode_code_data
   DECLPROC $DeployOk$_constructor_queryId
-  DECLPROC $Garant$_internal_binary_Withdraw
-  DECLPROC $Garant$_internal_binary_WithdrawTon
-  DECLPROC $Garant$_internal_binary_WithdrawNft
-  DECLPROC $Garant$_internal_binary_OwnershipAssigned
-  DECLPROC %$Garant$_internal_empty
-  DECLPROC $Garant$_internal_binary_Deploy
-  104128 DECLMETHOD %balance
-  83229 DECLMETHOD %owner
+  DECLPROC $GarantWallet$_internal_binary_TokenNotification
+  DECLPROC $GarantWallet$_internal_text_42b5f004f721b20d485ee7835367a635c29d02368495b2e5f27a0f90663946d0
+  DECLPROC %$GarantWallet$_internal_empty
+  DECLPROC $GarantWallet$_internal_binary_Deploy
+  100194 DECLMETHOD %data
   113617 DECLMETHOD supported_interfaces
   121275 DECLMETHOD get_abi_ipfs
   115390 DECLMETHOD lazy_deployment_completed
-  DECLPROC $Garant$_contract_router_internal
+  DECLPROC $GarantWallet$_contract_router_internal
   DECLPROC recv_internal
   DECLGLOBVAR __tact_context
   DECLGLOBVAR __tact_context_sender
@@ -104,39 +90,6 @@ PROGRAM{
       __tact_store_address INLINECALLDICT
     }>
   }>
-  __tact_create_address PROCINLINE:<{
-    NEWC
-    2 PUSHINT
-    SWAP
-    2 STU
-    0 PUSHINT
-    SWAP
-    1 STU
-    s1 s2 XCHG
-    8 STI
-    256 STU
-    ENDC
-    CTOS
-    __tact_verify_address INLINECALLDICT
-  }>
-  __tact_compute_contract_address PROCINLINE:<{
-    NEWC
-    0 PUSHINT
-    SWAP
-    2 STU
-    3 PUSHINT
-    SWAP
-    2 STU
-    0 PUSHINT
-    SWAP
-    1 STU
-    s1 s2 XCHG
-    STREF
-    STREF
-    ENDC
-    HASHCU
-    __tact_create_address INLINECALLDICT
-  }>
   __tact_my_balance PROCINLINE:<{
     BALANCE
     FIRST
@@ -159,18 +112,6 @@ PROGRAM{
   }>
   __tact_slice_eq_bits PROCINLINE:<{
     SDEQ
-  }>
-  __tact_dict_set_code PROCINLINE:<{
-    s0 s2 XCHG
-    16 PUSHINT
-    DICTUSETREF
-  }>
-  __tact_dict_get_code PROCINLINE:<{
-    SWAP
-    16 PUSHINT
-    DICTUGETREF
-    NULLSWAPIFNOT
-    135 THROWIFNOT
   }>
   $Deploy$_load PROCINLINE:<{
     32 LDU
@@ -263,51 +204,36 @@ PROGRAM{
     $NftTransfer$_store INLINECALLDICT
     ENDC
   }>
-  $OwnershipAssigned$_load PROCINLINE:<{
+  $TokenNotification$_load PROCINLINE:<{
     32 LDU
     SWAP
-    85167505 PUSHINT
+    1935855772 PUSHINT
     EQUAL
     129 THROWIFNOT
     64 LDU
-    __tact_load_address INLINECALLDICT
-    s2 s0 s2 XC2PU
-  }>
-  $Withdraw$_load PROCINLINE:<{
-    32 LDU
-    SWAP
-    976735757 PUSHINT
-    EQUAL
-    129 THROWIFNOT
     LDGRAMS
     __tact_load_address INLINECALLDICT
+    s3 s0 s3 XC2PU
+    s2 s3 XCHG
+  }>
+  $GarantWallet$_store PROCINLINE:<{
+    s4 s3 XCHG2
+    __tact_store_address INLINECALLDICT
+    SWAP
+    STGRAMS
     s1 s2 XCHG
-  }>
-  $WithdrawTon$_load PROCINLINE:<{
-    32 LDU
+    1 STI
     SWAP
-    4206811366 PUSHINT
-    EQUAL
-    129 THROWIFNOT
-    LDGRAMS
-    SWAP
-  }>
-  $WithdrawNft$_load PROCINLINE:<{
-    32 LDU
-    SWAP
-    2144643456 PUSHINT
-    EQUAL
-    129 THROWIFNOT
-    __tact_load_address INLINECALLDICT
-    SWAP
-    __tact_load_address INLINECALLDICT
-    s1 s2 XCHG
-  }>
-  $Garant$_store PROCINLINE:<{
     __tact_store_address INLINECALLDICT
   }>
-  $Garant$_load PROCINLINE:<{
+  $GarantWallet$_load PROCINLINE:<{
     __tact_load_address INLINECALLDICT
+    SWAP
+    LDGRAMS
+    1 LDI
+    __tact_load_address INLINECALLDICT
+    s1 s4 XCHG
+    s3 s3 s0 XCHG3
   }>
   $StateInit$_not_null PROCINLINE:<{
     DUP
@@ -315,22 +241,25 @@ PROGRAM{
     128 THROWIF
     2 UNTUPLE
   }>
-  $GarantWallet$init$_store PROCINLINE:<{
-    s4 s3 XCHG2
-    __tact_store_address INLINECALLDICT
-    257 PUSHINT
-    STIX
-    s1 s2 XCHG
-    1 STI
-    SWAP
-    __tact_store_address INLINECALLDICT
+  $Context$_get_sender PROCINLINE:<{
+    s2 s3 XCHG
+    3 BLKDROP
   }>
-  $Garant$init$_load PROCINLINE:<{
+  $Data$_to_external PROCINLINE:<{
+  }>
+  $GarantWallet$init$_load PROCINLINE:<{
     __tact_load_address INLINECALLDICT
+    SWAP
+    257 PUSHINT
+    LDIX
+    1 LDI
+    __tact_load_address INLINECALLDICT
+    s1 s4 XCHG
+    s3 s3 s0 XCHG3
   }>
-  $Garant$_contract_init PROCREF:<{
+  $GarantWallet$_contract_init PROCREF:<{
   }>
-  $Garant$_contract_load PROCREF:<{
+  $GarantWallet$_contract_load PROCREF:<{
     c4 PUSH
     CTOS
     LDREF
@@ -339,20 +268,21 @@ PROGRAM{
     1 LDI
     SWAP
     IFJMP:<{
-      $Garant$_load INLINECALLDICT
-      NIP
+      $GarantWallet$_load INLINECALLDICT
+      1 4 BLKDROP2
     }>
     MYADDR
     11 PLDU
     10 PUSHPOW2
     EQUAL
     137 THROWIFNOT
-    $Garant$init$_load INLINECALLDICT
-    SWAP
+    $GarantWallet$init$_load INLINECALLDICT
+    s0 s4 XCHG
     ENDS
-    $Garant$_contract_init INLINECALLDICT
+    3 ROLL
+    $GarantWallet$_contract_init INLINECALLDICT
   }>
-  $Garant$_contract_store PROCINLINE:<{
+  $GarantWallet$_contract_store PROCINLINE:<{
     NEWC
     __tact_context_sys GETGLOB
     SWAP
@@ -360,19 +290,14 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    SWAP
-    $Garant$_store INLINECALLDICT
+    4 -ROLL
+    $GarantWallet$_store INLINECALLDICT
     ENDC
     c4 POP
   }>
   $global_emptyCell PROCINLINE:<{
     NEWC
     ENDC
-  }>
-  $global_contractAddress PROCINLINE:<{
-    0 PUSHINT
-    -ROT
-    __tact_compute_contract_address INLINECALLDICT
   }>
   $global_send PROCREF:<{
     NEWC
@@ -476,34 +401,6 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
-  $GarantWallet$_init_child PROCREF:<{
-    s0 s4 XCHG
-    CTOS
-    LDDICT
-    DROP
-    NEWDICT
-    SWAP
-    40592 PUSHINT
-    __tact_dict_get_code INLINECALLDICT
-    SWAP
-    40592 PUSHINT
-    s2 PUSH
-    __tact_dict_set_code INLINECALLDICT
-    NEWC
-    SWAP
-    NEWC
-    STDICT
-    ENDC
-    SWAP
-    STREF
-    FALSE
-    SWAP
-    1 STI
-    4 -ROLL
-    s0 s5 XCHG
-    $GarantWallet$init$_store INLINECALLDICT
-    ENDC
-  }>
   $NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload PROCINLINE:<{
   }>
   $SendParameters$_constructor_to_value_mode_body PROCINLINE:<{
@@ -512,12 +409,36 @@ PROGRAM{
     PUSHNULL
     PUSHNULL
   }>
+  $GarantWallet$_fun_sendNft PROCREF:<{
+    0 PUSHINT
+    $global_emptyCell INLINECALLDICT
+    s1 s1 PUSH2
+    NEWC
+    1 STU
+    ENDC
+    CTOS
+    s8 PUSH
+    s4 s5 XCHG
+    3 -ROLL
+    $NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload INLINECALLDICT
+    $NftTransfer$_store_cell INLINECALLDICT
+    0 PUSHINT
+    66 PUSHINT
+    s3 PUSH
+    s0 s3 XCHG
+    $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
+  $Data$_constructor_owner_amount_isTon_nftAddress PROCINLINE:<{
+  }>
+  $GarantWallet$_fun_data PROCREF:<{
+    s3 s2 s1 PUSH3
+    s3 PUSH
+    $Data$_constructor_owner_amount_isTon_nftAddress INLINECALLDICT
+  }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
-  $Garant$_fun_balance PROCREF:<{
-    __tact_my_balance INLINECALLDICT
-  }>
-  $Garant$_fun_forward PROCREF:<{
+  $GarantWallet$_fun_forward PROCREF:<{
     PUSHNULL
     PUSHNULL
     s2 PUSH
@@ -539,28 +460,12 @@ PROGRAM{
     $SendParameters$_constructor_bounce_to_value_mode_body_code_data INLINECALLDICT
     $global_send INLINECALLDICT
   }>
-  $Garant$_fun_reply PROCINLINE:<{
-    __tact_context_get_sender INLINECALLDICT
-    SWAP
-    TRUE
-    PUSHNULL
-    $Garant$_fun_forward INLINECALLDICT
-  }>
-  $Garant$_fun_notify PROCINLINE:<{
+  $GarantWallet$_fun_notify PROCINLINE:<{
     __tact_context_get_sender INLINECALLDICT
     SWAP
     FALSE
     PUSHNULL
-    $Garant$_fun_forward INLINECALLDICT
-  }>
-  $Garant$_fun_requireOwner PROCREF:<{
-    __tact_context_get_sender INLINECALLDICT
-    s1 s(-1) PUXC
-    __tact_slice_eq_bits INLINECALLDICT
-    132 THROWIFNOT
-  }>
-  $Garant$_fun_owner PROCREF:<{
-    DUP
+    $GarantWallet$_fun_forward INLINECALLDICT
   }>
   $TokenTransfer$_constructor_query_id_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload PROCINLINE:<{
   }>
@@ -571,140 +476,97 @@ PROGRAM{
     PUSHNULL
     PUSHNULL
   }>
-  $SendParameters$_constructor_to_value_mode PROCINLINE:<{
-    TRUE
-    3 -ROLL
-    PUSHNULL
-    PUSHNULL
-    PUSHNULL
-  }>
-  $SendParameters$_constructor_to_value_mode_code_data PROCINLINE:<{
-    TRUE
-    s0 s5 XCHG
-    s0 s4 XCHG
-    s3 s1 s3 XCHG3
-    PUSHNULL
-    s0 s2 XCHG
-  }>
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
-  $Garant$_internal_binary_Withdraw PROCINLINE:<{
-    s0 s2 XCHG
-    $Garant$_fun_requireOwner INLINECALLDICT
-    0 PUSHINT
-    $global_emptyCell INLINECALLDICT
-    s1 s1 PUSH2
-    NEWC
-    1 STU
-    ENDC
-    CTOS
-    s4 PUSH
-    s4 s5 XCHG
-    s4 s6 XCHG
-    s3 s6 XCPU
-    s1 s3 s3 XCHG3
-    $TokenTransfer$_constructor_query_id_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload INLINECALLDICT
-    $TokenTransfer$_store_cell INLINECALLDICT
-    s1 s2 XCHG
-    0 PUSHINT
-    66 PUSHINT
-    $SendParameters$_constructor_to_body_value_mode INLINECALLDICT
-    $global_send INLINECALLDICT
-  }>
-  $Garant$_internal_binary_WithdrawTon PROCINLINE:<{
-    SWAP
-    $Garant$_fun_requireOwner INLINECALLDICT
-    s0 s1 PUXC
-    66 PUSHINT
-    $SendParameters$_constructor_to_value_mode INLINECALLDICT
-    $global_send INLINECALLDICT
-  }>
-  $Garant$_internal_binary_WithdrawNft PROCINLINE:<{
-    s0 s2 XCHG
-    $Garant$_fun_requireOwner INLINECALLDICT
-    0 PUSHINT
-    $global_emptyCell INLINECALLDICT
-    s1 s1 PUSH2
-    NEWC
-    1 STU
-    ENDC
-    CTOS
-    s4 PUSH
-    s4 s5 XCHG
-    s4 s7 XCHG
-    3 -ROLL
-    $NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload INLINECALLDICT
-    $NftTransfer$_store_cell INLINECALLDICT
-    0 PUSHINT
-    66 PUSHINT
-    ROT
-    $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
-    $global_send INLINECALLDICT
-  }>
-  $Garant$_internal_binary_OwnershipAssigned PROCINLINE:<{
-    1 2 BLKDROP2
-    LDGRAMS
-    FALSE
-    SWAP
-    LDGRAMS
+  $GarantWallet$_internal_binary_TokenNotification PROCINLINE:<{
     DROP
-    0 GTINT
+    s2 POP
+    s3 PUSH
+    0 EQINT
     IF:<{
-      DROP
-      TRUE
+      4054 PUSHINT
+      s1 s5 XCPU
+      GEQ
+      THROWANYIFNOT
+      __tact_context_get INLINECALLDICT
+      $Context$_get_sender INLINECALLDICT
+      s1 s5 XCHG
+      s1 s4 XCHG
+      s3 s3 s0 XCHG3
+      $GarantWallet$_fun_sendNft INLINECALLDICT
+      0 PUSHINT
+      $global_emptyCell INLINECALLDICT
+      s1 s1 PUSH2
+      NEWC
+      1 STU
+      ENDC
+      CTOS
+      s6 PUSH
+      s0 s4 XCHG
+      s5 s8 XCPU
+      s0 s4 XCHG
+      s3 s10 XCHG
+      s10 s2 XCHG2
+      $TokenTransfer$_constructor_query_id_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload INLINECALLDICT
+      $TokenTransfer$_store_cell INLINECALLDICT
+      __tact_context_get_sender INLINECALLDICT
+      SWAP
+      0 PUSHINT
+      66 PUSHINT
+      $SendParameters$_constructor_to_body_value_mode INLINECALLDICT
+      $global_send INLINECALLDICT
+      3 ROLL
+    }>ELSE<{
+      2DROP
     }>
-    __tact_context_sys GETGLOB
-    __tact_context_get_sender INLINECALLDICT
-    s3 s0 s4 XC2PU
-    s3 s3 XCHG2
-    $GarantWallet$_init_child INLINECALLDICT
-    2DUP
-    $global_contractAddress INLINECALLDICT
-    30000000 PUSHINT
-    2 PUSHINT
-    s2 PUSH
-    s1 s3 s4 XCHG3
-    s1 s5 XCHG
-    $SendParameters$_constructor_to_value_mode_code_data INLINECALLDICT
-    $global_send INLINECALLDICT
-    0 PUSHINT
-    $global_emptyCell INLINECALLDICT
-    s1 s1 PUSH2
-    NEWC
-    1 STU
-    ENDC
-    CTOS
-    s3 s5 XCHG
-    $NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload INLINECALLDICT
-    $NftTransfer$_store_cell INLINECALLDICT
-    $Garant$_fun_reply INLINECALLDICT
   }>
-  %$Garant$_internal_empty PROCINLINE:<{
+  $GarantWallet$_internal_text_42b5f004f721b20d485ee7835367a635c29d02368495b2e5f27a0f90663946d0 PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    2DROP
+    55553 PUSHINT
+    s2 POP
+    s5 PUSH
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    s3 PUSH
+    $GarantWallet$_fun_sendNft INLINECALLDICT
   }>
-  $Garant$_internal_binary_Deploy PROCINLINE:<{
+  %$GarantWallet$_internal_empty PROCINLINE:<{
+    __tact_context_get INLINECALLDICT
+    DROP
+    s2 POP
+    s3 PUSH
+    -1 EQINT
+    IF:<{
+      35865 PUSHINT
+      s2 s5 XCPU
+      GEQ
+      s1 s2 XCHG
+      THROWANYIFNOT
+      $GarantWallet$_fun_sendNft INLINECALLDICT
+    }>ELSE<{
+      2DROP
+    }>
+  }>
+  $GarantWallet$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
     $DeployOk$_store_cell INLINECALLDICT
-    $Garant$_fun_notify INLINECALLDICT
+    $GarantWallet$_fun_notify INLINECALLDICT
   }>
-  %balance PROC:<{
-    $Garant$_contract_load INLINECALLDICT
-    $Garant$_fun_balance INLINECALLDICT
-    NIP
-  }>
-  %owner PROC:<{
-    $Garant$_contract_load INLINECALLDICT
-    $Garant$_fun_owner INLINECALLDICT
-    NIP
+  %data PROC:<{
+    $GarantWallet$_contract_load INLINECALLDICT
+    $GarantWallet$_fun_data INLINECALLDICT
+    4 4 BLKDROP2
+    $Data$_to_external INLINECALLDICT
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
     209801025412363888721030803524359905849 PUSHINT
     42980537499636128163026532310500881091 PUSHINT
     209474421377847335869795010607481022628 PUSHINT
-    86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d55674a3864726337445a424d41433534384d48454d4c3345437267726a74426e484177707377697838416e58} PUSHSLICE
+    x{697066733a2f2f516d53585a73444a55476e7262525367364c6e6f5570594a71655a314d5367677a6970705a41576f4b4e61767363} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -712,7 +574,9 @@ PROGRAM{
     1 LDI
     SWAP
   }>
-  $Garant$_contract_router_internal PROCREF:<{
+  $GarantWallet$_contract_router_internal PROCREF:<{
+    c2 SAVE
+    SAMEALTSAVE
     SWAP
     IFJMP:<{
       DROP
@@ -728,43 +592,13 @@ PROGRAM{
       32 PLDU
     }>
     DUP
-    976735757 PUSHINT
+    1935855772 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
-      $Withdraw$_load INLINECALLDICT
-      1 2 BLKDROP2
-      $Garant$_internal_binary_Withdraw INLINECALLDICT
-      TRUE
-    }>
-    DUP
-    4206811366 PUSHINT
-    EQUAL
-    IFJMP:<{
-      DROP
-      $WithdrawTon$_load INLINECALLDICT
-      NIP
-      $Garant$_internal_binary_WithdrawTon INLINECALLDICT
-      TRUE
-    }>
-    DUP
-    2144643456 PUSHINT
-    EQUAL
-    IFJMP:<{
-      DROP
-      $WithdrawNft$_load INLINECALLDICT
-      1 2 BLKDROP2
-      $Garant$_internal_binary_WithdrawNft INLINECALLDICT
-      TRUE
-    }>
-    DUP
-    85167505 PUSHINT
-    EQUAL
-    IFJMP:<{
-      DROP
-      $OwnershipAssigned$_load INLINECALLDICT
-      1 3 BLKDROP2
-      $Garant$_internal_binary_OwnershipAssigned INLINECALLDICT
+      $TokenNotification$_load INLINECALLDICT
+      1 4 BLKDROP2
+      $GarantWallet$_internal_binary_TokenNotification INLINECALLDICT
       TRUE
     }>
     DUP
@@ -775,18 +609,32 @@ PROGRAM{
     AND
     IFJMP:<{
       2DROP
-      %$Garant$_internal_empty INLINECALLDICT
+      %$GarantWallet$_internal_empty INLINECALLDICT
       TRUE
     }>
+    DUP
     2490013878 PUSHINT
     EQUAL
     IFJMP:<{
+      DROP
       $Deploy$_load INLINECALLDICT
       NIP
-      $Garant$_internal_binary_Deploy INLINECALLDICT
+      $GarantWallet$_internal_binary_Deploy INLINECALLDICT
       TRUE
     }>
-    DROP
+    0 EQINT
+    IF:<{
+      HASHSU
+      30174103878209483173285765558465042503875314782952444519383763651495160530640 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $GarantWallet$_internal_text_42b5f004f721b20d485ee7835367a635c29d02368495b2e5f27a0f90663946d0 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+    }>ELSE<{
+      DROP
+    }>
     FALSE
   }>
   recv_internal PROC:<{
@@ -807,10 +655,10 @@ PROGRAM{
     __tact_context SETGLOB
     s0 s2 XCHG
     __tact_context_sender SETGLOB
-    $Garant$_contract_load INLINECALLDICT
-    -ROT
-    $Garant$_contract_router_internal INLINECALLDICT
+    $GarantWallet$_contract_load INLINECALLDICT
+    2 4 BLKSWAP
+    $GarantWallet$_contract_router_internal INLINECALLDICT
     130 THROWIFNOT
-    $Garant$_contract_store INLINECALLDICT
+    $GarantWallet$_contract_store INLINECALLDICT
   }>
 }END>c

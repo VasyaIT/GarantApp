@@ -5,10 +5,8 @@ import { getHttpEndpoint } from '@orbs-network/ton-access';
 import { GarantAddress, jettonDecimals, network, humsterJettonMaster, jettonTransactionFee } from '../const';
 import { useTonConnect } from './useTonConnect';
 
-export function SendJettons() {
-    // Sending $HMSTR to contract
-
-    const [amount, setAmount] = useState('');
+export function BuyNft() {
+    const [nftAddress, setNftAddress] = useState('')
     const amountJettons = (parseInt(amount) + jettonTransactionFee) * 10 ** jettonDecimals
     const { sender, walletAddress } = useTonConnect()
 
@@ -34,11 +32,11 @@ export function SendJettons() {
 
     return (
         <div style={{marginRight: '7em',  marginBottom: '3em'}}>
-            <input className='input-text' placeholder='Количество $HMSTR' type="text" value={amount} 
-                onChange={e => setAmount(e.target.value)}
+            <input className='input-text' placeholder='Адрес NFT' type="text" value={amount} 
+                onChange={e => setNftAddress(e.target.value)}
             />
             <br />
-            <button className='withdraw-btn' onClick={send}>Отправить $HMSTR</button>
+            <button className='withdraw-btn' onClick={send}>Купить NFT</button>
         </div>
     )
 }

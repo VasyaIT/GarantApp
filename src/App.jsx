@@ -2,29 +2,24 @@ import './App.css'
 import { TonConnectButton } from '@tonconnect/ui-react'
 import { buttonStyle, contentStyle, rightContentStyle, leftContentStyle } from './style'
 import { Withdraw } from './usecase/withdraw'
-import { CollectNft } from './usecase/collectNft'
 import { SendNft } from './usecase/sendNft'
-import { SendJettons } from './usecase/sendJettons'
-import { CollectTon } from './usecase/collectTon'
+import { BuyNft } from './usecase/buyNft'
+import { Cancel } from './usecase/cancelSell'
 import { SendTon } from './usecase/sendTon'
-import { GetBalance } from './usecase/getBalance'
 
 function App() {
 	return (
 		<div className='App'>
 			<main>
 				<TonConnectButton style={buttonStyle}/>
-				<GetBalance />
-				<hr />
 				<div style={contentStyle}>
 					<div style={leftContentStyle}>
-						<CollectNft />
 						<Withdraw />
-						<CollectTon />
+						<Cancel />
 					</div>
 					<div style={rightContentStyle}>
 						<SendNft />
-						<SendJettons />
+						{/* <BuyNft /> */}
 						<SendTon />
 					</div>
 				</div>

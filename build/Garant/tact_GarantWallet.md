@@ -1,6 +1,6 @@
 # TACT Compilation Report
-Contract: Garant
-BOC Size: 1594 bytes
+Contract: GarantWallet
+BOC Size: 1345 bytes
 
 # Types
 Total Types: 19
@@ -82,11 +82,9 @@ TLB: `send_jetton#54d7ad9e jettonWalletAddress:address toAddress:address amount:
 Signature: `SendJetton{jettonWalletAddress:address,toAddress:address,amount:coins}`
 
 # Get Methods
-Total Get Methods: 2
+Total Get Methods: 1
 
-## balance
-
-## owner
+## data
 
 # Error Codes
 2: Stack undeflow

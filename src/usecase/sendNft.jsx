@@ -5,21 +5,24 @@ import { useTonConnect } from './useTonConnect';
 
 export function SendNft() {
     // Sending NFT to contract
-
     const { sender, walletAddress } = useTonConnect()
-    const [nftAddress, setNftAddress] = useState('');
+    const [nftAddress, setNftAddress] = useState('')
+    const [nftPrice, setNftPrice] = useState('')
+    const isTon = false
+    const amount = toNano(nftPrice)
 
     const send = async () => {
-        const message = beginCell()
+        const nftMessage = beginCell()
             .storeUint(0x5fcc3d14, 32)
             .storeUint(0, 64)
             .storeAddress(Address.parse(GarantAddress))
             .storeAddress(Address.parse(walletAddress))
             .storeBit(false)
             .storeCoins(toNano("0.05"))
-            .storeUint(0, 1)
+            .storeSlice(beginCell().storeCoins(amount).storeBit(isTon).endCell().asSlice())
             .endCell()
-        sender.send({to: Address.parse(nftAddress), value: toNano("0.1"), body: message})
+        
+        sender.send({to: Address.parse(nftAddress), value: toNano("0.1"), body: nftMessage})
     }
 
     return (
@@ -28,7 +31,11 @@ export function SendNft() {
                 onChange={e => setNftAddress(e.target.value)}
             />
             <br />
-            <button className='sendNft' onClick={send}>Отправить NFT</button>
+            <input className='input-text' placeholder='Цена' type="text" value={nftPrice} 
+                onChange={e => setNftPrice(e.target.value)}
+            />
+            <br />
+            <button className='sendNft' onClick={send}>Выставить на продажу</button>
         </div>
     );
 }

@@ -1,9 +1,9 @@
 # TACT Compilation Report
-Contract: Garant
-BOC Size: 1594 bytes
+Contract: GarantWallet
+BOC Size: 1345 bytes
 
 # Types
-Total Types: 19
+Total Types: 17
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -28,18 +28,6 @@ Signature: `DeployOk{queryId:uint64}`
 ## FactoryDeploy
 TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
 Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
-
-## ChangeOwner
-TLB: `change_owner#819dbe99 queryId:uint64 newOwner:address = ChangeOwner`
-Signature: `ChangeOwner{queryId:uint64,newOwner:address}`
-
-## ChangeOwnerOk
-TLB: `change_owner_ok#327b2b4a queryId:uint64 newOwner:address = ChangeOwnerOk`
-Signature: `ChangeOwnerOk{queryId:uint64,newOwner:address}`
-
-## Data
-TLB: `_ owner:address amount:int257 isTon:bool nftAddress:address = Data`
-Signature: `Data{owner:address,amount:int257,isTon:bool,nftAddress:address}`
 
 ## TokenTransfer
 TLB: `token_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address response_destination:Maybe address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
@@ -81,12 +69,14 @@ Signature: `SendTon{toAddress:address,amount:coins}`
 TLB: `send_jetton#54d7ad9e jettonWalletAddress:address toAddress:address amount:coins = SendJetton`
 Signature: `SendJetton{jettonWalletAddress:address,toAddress:address,amount:coins}`
 
+## Data
+TLB: `_ owner:address amount:int257 isTon:bool nftAddress:address = Data`
+Signature: `Data{owner:address,amount:int257,isTon:bool,nftAddress:address}`
+
 # Get Methods
-Total Get Methods: 2
+Total Get Methods: 1
 
-## balance
-
-## owner
+## data
 
 # Error Codes
 2: Stack undeflow

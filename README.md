@@ -1,9 +1,10 @@
 # React + Vite
 
 ## Start
+
 ```sh
 git clone https://github.com/VasyaIT/GarantApp.git
-cd garant
+cd GarantApp
 ```
 
 ```sh
