@@ -54,8 +54,8 @@ builder $NftTransfer$_store(builder build_0, (int, slice, slice, cell, int, slic
 ;; $NftTransfer$_store_cell
 cell $NftTransfer$_store_cell((int, slice, slice, cell, int, slice) v) inline;
 
-;; $TokenNotification$_load
-(slice, ((int, int, slice, slice))) $TokenNotification$_load(slice sc_0) inline;
+;; $JettonNotify$_load
+(slice, ((int, int, slice, slice))) $JettonNotify$_load(slice sc_0) inline;
 
 ;; $GarantWallet$_store
 builder $GarantWallet$_store(builder build_0, (slice, int, int, slice) v) inline;
@@ -65,9 +65,6 @@ builder $GarantWallet$_store(builder build_0, (slice, int, int, slice) v) inline
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
-
-;; $Context$_get_sender
-_ $Context$_get_sender((int, slice, int, slice) v) inline;
 
 ;; $Data$_to_external
 (slice, int, int, slice) $Data$_to_external(((slice, int, int, slice)) v) inline;
@@ -111,14 +108,17 @@ cell $global_emptyCell() impure inline;
 ;; $GarantWallet$_fun_forward
 ((slice, int, int, slice), ()) $GarantWallet$_fun_forward((slice, int, int, slice) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
+;; $GarantWallet$_fun_reply
+((slice, int, int, slice), ()) $GarantWallet$_fun_reply((slice, int, int, slice) $self, cell $body) impure inline;
+
 ;; $GarantWallet$_fun_notify
 ((slice, int, int, slice), ()) $GarantWallet$_fun_notify((slice, int, int, slice) $self, cell $body) impure inline;
 
 ;; $TokenTransfer$_constructor_query_id_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload
 ((int, int, slice, slice, cell, int, slice)) $TokenTransfer$_constructor_query_id_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(int query_id, int amount, slice destination, slice response_destination, cell custom_payload, int forward_ton_amount, slice forward_payload) inline;
 
-;; $SendParameters$_constructor_to_body_value_mode
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_body_value_mode(slice to, cell body, int value, int mode) inline;
+;; $SendParameters$_constructor_to_value_mode
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode(slice to, int value, int mode) inline;
 
 ;; $DeployOk$_constructor_queryId
 ((int)) $DeployOk$_constructor_queryId(int queryId) inline;

@@ -126,6 +126,12 @@ cell $global_emptyCell() impure inline {
     return (($self'owner, $self'amount, $self'isTon, $self'nftAddress), ());
 }
 
+((slice, int, int, slice), ()) $GarantWallet$_fun_reply((slice, int, int, slice) $self, cell $body) impure inline {
+    var (($self'owner, $self'amount, $self'isTon, $self'nftAddress)) = $self;
+    ($self'owner, $self'amount, $self'isTon, $self'nftAddress)~$GarantWallet$_fun_forward(__tact_context_get_sender(), $body, true, null());
+    return (($self'owner, $self'amount, $self'isTon, $self'nftAddress), ());
+}
+
 ((slice, int, int, slice), ()) $GarantWallet$_fun_notify((slice, int, int, slice) $self, cell $body) impure inline {
     var (($self'owner, $self'amount, $self'isTon, $self'nftAddress)) = $self;
     ($self'owner, $self'amount, $self'isTon, $self'nftAddress)~$GarantWallet$_fun_forward(__tact_context_get_sender(), $body, false, null());

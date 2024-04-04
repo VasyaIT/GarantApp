@@ -8,19 +8,18 @@ import { network } from '../const';
 
 export function Cancel() {
     const { sender } = useTonConnect()
-    const [nftAddress, setNftAddress] = useState('')
+    const [garantWallet, setGarantWallet] = useState('')
 
     const send = async () => {
-        const garantWallet = "kQB6cJdNzuvD6o15nT42C0-MpF4WvRkmRRhesahKi4DvAXO5"
         const client = new TonClient({ endpoint: await getHttpEndpoint({network: network}) })
         const jettonContract = client.open(GarantWallet.fromAddress(Address.parse(garantWallet)))
         jettonContract.send(sender, { value: toNano("0.1") }, "Cancel")
     }
 
     return (
-        <div style={{marginRight: '7em',  marginBottom: '3em'}}>
-            <input className='input-text' placeholder='Адрес NFT' type="text" value={nftAddress} 
-                onChange={e => setNftAddress(e.target.value)}
+        <div style={{marginRight: '7em',  marginBottom: '3em', width: '80%'}}>
+            <input className='input-text' placeholder='Адрес контракта (только продавец)' type="text" value={garantWallet} 
+                onChange={e => setGarantWallet(e.target.value)}
             />
             <br />
             <button onClick={send}>Снять с продажи</button>

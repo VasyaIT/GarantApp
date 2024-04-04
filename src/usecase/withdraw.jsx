@@ -25,8 +25,8 @@ export function Withdraw() {
     }
 
     return (
-        <div style={{marginRight: '7em',  marginBottom: '3em'}}>
-            <input className='input-text' placeholder='Количество $HMSTR' type="text" value={amount} 
+        <div style={{marginRight: '7em',  marginBottom: '3em', width: '80%'}}>
+            <input className='input-text' placeholder='Кол-во $HMSTR (только овнер)' type="text" value={amount} 
                 onChange={e => setAmount(e.target.value)}
             />
             <br />

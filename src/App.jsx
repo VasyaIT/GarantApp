@@ -3,9 +3,10 @@ import { TonConnectButton } from '@tonconnect/ui-react'
 import { buttonStyle, contentStyle, rightContentStyle, leftContentStyle } from './style'
 import { Withdraw } from './usecase/withdraw'
 import { SendNft } from './usecase/sendNft'
-import { BuyNft } from './usecase/buyNft'
 import { Cancel } from './usecase/cancelSell'
 import { SendTon } from './usecase/sendTon'
+import { SendJettons } from './usecase/sendJetton'
+import { WithdrawTon } from './usecase/withdrawTon'
 
 function App() {
 	return (
@@ -14,6 +15,7 @@ function App() {
 				<TonConnectButton style={buttonStyle}/>
 				<div style={contentStyle}>
 					<div style={leftContentStyle}>
+						<WithdrawTon />
 						<Withdraw />
 						<Cancel />
 					</div>
@@ -21,6 +23,7 @@ function App() {
 						<SendNft />
 						{/* <BuyNft /> */}
 						<SendTon />
+						<SendJettons />
 					</div>
 				</div>
 			</main>

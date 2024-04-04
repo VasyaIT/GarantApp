@@ -21,8 +21,8 @@
 
 ((slice, int, int, slice), ()) $GarantWallet$_fun_sendNft((slice, int, int, slice) $self, slice $newOwner) impure inline_ref {
     var (($self'owner, $self'amount, $self'isTon, $self'nftAddress)) = $self;
-    cell $transferBody = $NftTransfer$_store_cell($NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload(0, $newOwner, $self'owner, $global_emptyCell(), 0, begin_parse(end_cell(store_uint(begin_cell(), 0, 1)))));
-    $global_send($SendParameters$_constructor_to_value_mode_body($self'nftAddress, 0, (2 + 64), $transferBody));
+    cell $nftBody = $NftTransfer$_store_cell($NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload(0, $newOwner, $newOwner, $global_emptyCell(), 100000000, begin_parse(end_cell(store_uint(begin_cell(), 0, 1)))));
+    $global_send($SendParameters$_constructor_to_value_mode_body($self'nftAddress, 500000000, 2, $nftBody));
     return (($self'owner, $self'amount, $self'isTon, $self'nftAddress), ());
 }
 
@@ -35,14 +35,14 @@
 ;; Receivers of a Contract GarantWallet
 ;;
 
-(((slice, int, int, slice)), ()) $GarantWallet$_internal_binary_TokenNotification((slice, int, int, slice) $self, (int, int, slice, slice) $msg) impure inline {
+(((slice, int, int, slice)), ()) $GarantWallet$_internal_binary_JettonNotify((slice, int, int, slice) $self, (int, int, slice, slice) $msg) impure inline {
     var ($self'owner, $self'amount, $self'isTon, $self'nftAddress) = $self;
-    var ($msg'queryId, $msg'amount, $msg'from, $msg'forwardPayload) = $msg;
+    var ($msg'query_id, $msg'amount, $msg'sender, $msg'forward_payload) = $msg;
     if (($self'isTon == false)) {
         throw_unless(4054, ($msg'amount >= $self'amount));
-        ($self'owner, $self'amount, $self'isTon, $self'nftAddress)~$GarantWallet$_fun_sendNft($Context$_get_sender(__tact_context_get()));
-        cell $transferBody = $TokenTransfer$_store_cell($TokenTransfer$_constructor_query_id_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(0, $self'amount, $self'owner, $msg'from, $global_emptyCell(), 0, begin_parse(end_cell(store_uint(begin_cell(), 0, 1)))));
-        $global_send($SendParameters$_constructor_to_body_value_mode(__tact_context_get_sender(), $transferBody, 0, (2 + 64)));
+        ($self'owner, $self'amount, $self'isTon, $self'nftAddress)~$GarantWallet$_fun_sendNft($msg'sender);
+        cell $transferBody = $TokenTransfer$_store_cell($TokenTransfer$_constructor_query_id_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload($msg'query_id, $self'amount, $self'owner, $self'owner, $global_emptyCell(), 100000000, begin_parse(end_cell(store_uint(begin_cell(), 0, 1)))));
+        ($self'owner, $self'amount, $self'isTon, $self'nftAddress)~$GarantWallet$_fun_reply($transferBody);
     }
     return (($self'owner, $self'amount, $self'isTon, $self'nftAddress), ());
 }
@@ -51,17 +51,24 @@
     var ($self'owner, $self'amount, $self'isTon, $self'nftAddress) = $self;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     throw_unless(55553, ( __tact_slice_eq_bits($ctx'sender, $self'owner) ));
-    ($self'owner, $self'amount, $self'isTon, $self'nftAddress)~$GarantWallet$_fun_sendNft($self'owner);
+    cell $nftBody = $NftTransfer$_store_cell($NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload(0, $self'owner, $self'owner, $global_emptyCell(), 0, begin_parse(end_cell(store_uint(begin_cell(), 0, 1)))));
+    $global_send($SendParameters$_constructor_to_value_mode_body($self'nftAddress, 0, (2 + 64), $nftBody));
+    return (($self'owner, $self'amount, $self'isTon, $self'nftAddress), ());
+}
+
+((slice, int, int, slice), ()) $GarantWallet$_internal_text_d221ea077e9cd1499be1c50fe42098e6977a9718dedc91816d6ede27aead099b((slice, int, int, slice) $self) impure inline {
+    var ($self'owner, $self'amount, $self'isTon, $self'nftAddress) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    if (($self'isTon == true)) {
+        throw_unless(8038, ($ctx'value >= $self'amount));
+        $global_send($SendParameters$_constructor_to_value_mode($self'owner, $self'amount, 2));
+        ($self'owner, $self'amount, $self'isTon, $self'nftAddress)~$GarantWallet$_fun_sendNft($ctx'sender);
+    }
     return (($self'owner, $self'amount, $self'isTon, $self'nftAddress), ());
 }
 
 (((slice, int, int, slice)), ()) %$GarantWallet$_internal_empty((slice, int, int, slice) $self) impure inline {
     var ($self'owner, $self'amount, $self'isTon, $self'nftAddress) = $self;
-    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
-    if (($self'isTon == true)) {
-        throw_unless(35865, ($ctx'value >= $self'amount));
-        ($self'owner, $self'amount, $self'isTon, $self'nftAddress)~$GarantWallet$_fun_sendNft($ctx'sender);
-    }
     return (($self'owner, $self'amount, $self'isTon, $self'nftAddress), ());
 }
 
@@ -92,7 +99,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmSXZsDJUGnrbRSg6LnoUpYJqeZ1MSggzippZAWoKNavsc";
+    return "ipfs://QmcJrKqeET3js5pwRa8xhh1jUGVEgaExs3VeuTgQAXkpUd";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -116,10 +123,10 @@ _ lazy_deployment_completed() method_id {
     }
     
     
-    ;; Receive TokenNotification message
+    ;; Receive JettonNotify message
     if (op == 1935855772) {
-        var msg = in_msg~$TokenNotification$_load();
-        self~$GarantWallet$_internal_binary_TokenNotification(msg);
+        var msg = in_msg~$JettonNotify$_load();
+        self~$GarantWallet$_internal_binary_JettonNotify(msg);
         return (self, true);
     }
     
@@ -143,6 +150,12 @@ _ lazy_deployment_completed() method_id {
         ;; Receive "Cancel" message
         if (text_op == 0x42b5f004f721b20d485ee7835367a635c29d02368495b2e5f27a0f90663946d0) {
             self~$GarantWallet$_internal_text_42b5f004f721b20d485ee7835367a635c29d02368495b2e5f27a0f90663946d0();
+            return (self, true);
+        }
+        
+        ;; Receive "Buy" message
+        if (text_op == 0xd221ea077e9cd1499be1c50fe42098e6977a9718dedc91816d6ede27aead099b) {
+            self~$GarantWallet$_internal_text_d221ea077e9cd1499be1c50fe42098e6977a9718dedc91816d6ede27aead099b();
             return (self, true);
         }
     }

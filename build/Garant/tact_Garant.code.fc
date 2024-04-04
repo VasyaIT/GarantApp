@@ -73,7 +73,7 @@
     }
     var ($sinit'code, $sinit'data) = $GarantWallet$_init_child(__tact_context_sys, $msg'prev_owner, $amount, $isTon, __tact_context_get_sender());
     slice $garantWalletAddress = $global_contractAddress(($sinit'code, $sinit'data));
-    $global_send($SendParameters$_constructor_to_value_mode_code_data($garantWalletAddress, 30000000, 2, $sinit'code, $sinit'data));
+    $global_send($SendParameters$_constructor_to_value_mode_code_data($garantWalletAddress, 1000000000, 2, $sinit'code, $sinit'data));
     cell $transferBody = $NftTransfer$_store_cell($NftTransfer$_constructor_query_id_new_owner_response_destination_custom_payload_forward_amount_forward_payload(0, $garantWalletAddress, $msg'prev_owner, $global_emptyCell(), 0, begin_parse(end_cell(store_uint(begin_cell(), 0, 1)))));
     ($self'owner)~$Garant$_fun_reply($transferBody);
     return (($self'owner), ());
@@ -118,7 +118,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmUgJ8drc7DZBMAC548MHEML3ECrgrjtBnHAwpswix8AnX";
+    return "ipfs://QmSKkvBLVFqFnjQVv9VVXUjUCcqQ7EX1oukVKbcb2g2vct";
 }
 
 _ lazy_deployment_completed() method_id {

@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: GarantWallet
-BOC Size: 1345 bytes
+BOC Size: 1428 bytes
 
 # Types
 Total Types: 17
@@ -37,9 +37,9 @@ Signature: `TokenTransfer{query_id:uint64,amount:coins,destination:address,respo
 TLB: `nft_transfer#5fcc3d14 query_id:uint64 new_owner:address response_destination:address custom_payload:Maybe ^cell forward_amount:coins forward_payload:remainder<slice> = NftTransfer`
 Signature: `NftTransfer{query_id:uint64,new_owner:address,response_destination:address,custom_payload:Maybe ^cell,forward_amount:coins,forward_payload:remainder<slice>}`
 
-## TokenNotification
-TLB: `token_notification#7362d09c queryId:uint64 amount:coins from:address forwardPayload:remainder<slice> = TokenNotification`
-Signature: `TokenNotification{queryId:uint64,amount:coins,from:address,forwardPayload:remainder<slice>}`
+## JettonNotify
+TLB: `jetton_notify#7362d09c query_id:uint64 amount:coins sender:address forward_payload:remainder<slice> = JettonNotify`
+Signature: `JettonNotify{query_id:uint64,amount:coins,sender:address,forward_payload:remainder<slice>}`
 
 ## OwnershipAssigned
 TLB: `ownership_assigned#05138d91 query_id:uint64 prev_owner:address forward_payload:remainder<slice> = OwnershipAssigned`
@@ -104,5 +104,5 @@ Total Get Methods: 1
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 4054: Not enougth jettons
-35865: Not enougth tons
+8038: Not enougth TONs
 55553: Forbidden

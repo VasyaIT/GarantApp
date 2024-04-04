@@ -5,7 +5,7 @@ if (network === 'testnet') {
 } else {
 	humsterJettonMaster = 'EQBam5RuB3inYXsUlamTIEqu-tNy5NmX4FBLAcZe_360eWWE'
 }
-export const GarantAddress = 'kQDIlgqy-rnPlgMp4CdC9VpIBJTZUMtm3_1DRAtB-GeMSEV8'
+export const GarantAddress = 'EQAdNdcUSDnHi10fRYEtNVQe7qJI1wfxp_U2GJSO8wywR3sq'
 export const jettonDecimals = 9
 export const jettonTransactionFee = 1000
 export const tonTransactionFee = 0.5

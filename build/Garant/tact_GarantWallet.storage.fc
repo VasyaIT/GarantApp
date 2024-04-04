@@ -10,16 +10,6 @@
 }
 
 ;;
-;; Type: Context
-;; TLB: _ bounced:bool sender:address value:int257 raw:^slice = Context
-;;
-
-_ $Context$_get_sender((int, slice, int, slice) v) inline {
-    var (v'bounced, v'sender, v'value, v'raw) = v;
-    return v'sender;
-}
-
-;;
 ;; Type: SendParameters
 ;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
 ;;
@@ -32,8 +22,8 @@ _ $Context$_get_sender((int, slice, int, slice) v) inline {
     return (bounce, to, value, mode, body, code, data);
 }
 
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_body_value_mode(slice to, cell body, int value, int mode) inline {
-    return (true, to, value, mode, body, null(), null());
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode(slice to, int value, int mode) inline {
+    return (true, to, value, mode, null(), null(), null());
 }
 
 ;;
@@ -137,18 +127,18 @@ cell $NftTransfer$_store_cell((int, slice, slice, cell, int, slice) v) inline {
 }
 
 ;;
-;; Type: TokenNotification
+;; Type: JettonNotify
 ;; Header: 0x7362d09c
-;; TLB: token_notification#7362d09c queryId:uint64 amount:coins from:address forwardPayload:remainder<slice> = TokenNotification
+;; TLB: jetton_notify#7362d09c query_id:uint64 amount:coins sender:address forward_payload:remainder<slice> = JettonNotify
 ;;
 
-(slice, ((int, int, slice, slice))) $TokenNotification$_load(slice sc_0) inline {
+(slice, ((int, int, slice, slice))) $JettonNotify$_load(slice sc_0) inline {
     throw_unless(129, sc_0~load_uint(32) == 1935855772);
-    var v'queryId = sc_0~load_uint(64);
+    var v'query_id = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
-    var v'from = sc_0~__tact_load_address();
-    var v'forwardPayload = sc_0;
-    return (sc_0, (v'queryId, v'amount, v'from, v'forwardPayload));
+    var v'sender = sc_0~__tact_load_address();
+    var v'forward_payload = sc_0;
+    return (sc_0, (v'query_id, v'amount, v'sender, v'forward_payload));
 }
 
 ;;

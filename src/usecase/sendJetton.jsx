@@ -2,11 +2,14 @@ import { useState } from 'react';
 import { Address, toNano, beginCell } from '@ton/core'
 import { JettonMaster, TonClient } from '@ton/ton';
 import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { GarantAddress, jettonDecimals, network, humsterJettonMaster, jettonTransactionFee } from '../const';
+import { jettonDecimals, network, humsterJettonMaster, jettonTransactionFee } from '../const';
 import { useTonConnect } from './useTonConnect';
 
-export function BuyNft() {
-    const [nftAddress, setNftAddress] = useState('')
+export function SendJettons() {
+    // Sending $HMSTR to contract
+
+    const [amount, setAmount] = useState('');
+    const [garantWallet, setGarantWallet] = useState('')
     const amountJettons = (parseInt(amount) + jettonTransactionFee) * 10 ** jettonDecimals
     const { sender, walletAddress } = useTonConnect()
 
@@ -20,23 +23,26 @@ export function BuyNft() {
             .storeUint(0xf8a7ea5, 32)
             .storeUint(0, 64)
             .storeCoins(amountJettons)
-            .storeAddress(Address.parse(GarantAddress))
+            .storeAddress(Address.parse(garantWallet))
             .storeAddress(Address.parse(walletAddress))
             .storeBit(false)
-            .storeCoins(toNano('0.05'))
+            .storeCoins(toNano('1'))
             .storeUint(0, 1)
             .endCell()
 
-        sender.send({to: userJettonWallet, value: toNano("0.1"), body: message})
+        sender.send({to: userJettonWallet, value: toNano("2"), body: message})
     }
 
     return (
         <div style={{marginRight: '7em',  marginBottom: '3em'}}>
-            <input className='input-text' placeholder='Адрес NFT' type="text" value={amount} 
-                onChange={e => setNftAddress(e.target.value)}
+            <input className='input-text' placeholder='Адрес контракта (для покупателя)' type="text" value={garantWallet} 
+                onChange={e => setGarantWallet(e.target.value)}
+            />
+            <input className='input-text' placeholder='Кол-во $HMSTR (для покупателя)' type="text" value={amount} 
+                onChange={e => setAmount(e.target.value)}
             />
             <br />
-            <button className='withdraw-btn' onClick={send}>Купить NFT</button>
+            <button className='withdraw-btn' onClick={send}>Отправить $HMSTR</button>
         </div>
     )
 }

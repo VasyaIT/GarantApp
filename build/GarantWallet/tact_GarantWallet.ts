@@ -460,59 +460,59 @@ function dictValueParserNftTransfer(): DictionaryValue<NftTransfer> {
     }
 }
 
-export type TokenNotification = {
-    $$type: 'TokenNotification';
-    queryId: bigint;
+export type JettonNotify = {
+    $$type: 'JettonNotify';
+    query_id: bigint;
     amount: bigint;
-    from: Address;
-    forwardPayload: Cell;
+    sender: Address;
+    forward_payload: Cell;
 }
 
-export function storeTokenNotification(src: TokenNotification) {
+export function storeJettonNotify(src: JettonNotify) {
     return (builder: Builder) => {
         let b_0 = builder;
         b_0.storeUint(1935855772, 32);
-        b_0.storeUint(src.queryId, 64);
+        b_0.storeUint(src.query_id, 64);
         b_0.storeCoins(src.amount);
-        b_0.storeAddress(src.from);
-        b_0.storeBuilder(src.forwardPayload.asBuilder());
+        b_0.storeAddress(src.sender);
+        b_0.storeBuilder(src.forward_payload.asBuilder());
     };
 }
 
-export function loadTokenNotification(slice: Slice) {
+export function loadJettonNotify(slice: Slice) {
     let sc_0 = slice;
     if (sc_0.loadUint(32) !== 1935855772) { throw Error('Invalid prefix'); }
-    let _queryId = sc_0.loadUintBig(64);
+    let _query_id = sc_0.loadUintBig(64);
     let _amount = sc_0.loadCoins();
-    let _from = sc_0.loadAddress();
-    let _forwardPayload = sc_0.asCell();
-    return { $$type: 'TokenNotification' as const, queryId: _queryId, amount: _amount, from: _from, forwardPayload: _forwardPayload };
+    let _sender = sc_0.loadAddress();
+    let _forward_payload = sc_0.asCell();
+    return { $$type: 'JettonNotify' as const, query_id: _query_id, amount: _amount, sender: _sender, forward_payload: _forward_payload };
 }
 
-function loadTupleTokenNotification(source: TupleReader) {
-    let _queryId = source.readBigNumber();
+function loadTupleJettonNotify(source: TupleReader) {
+    let _query_id = source.readBigNumber();
     let _amount = source.readBigNumber();
-    let _from = source.readAddress();
-    let _forwardPayload = source.readCell();
-    return { $$type: 'TokenNotification' as const, queryId: _queryId, amount: _amount, from: _from, forwardPayload: _forwardPayload };
+    let _sender = source.readAddress();
+    let _forward_payload = source.readCell();
+    return { $$type: 'JettonNotify' as const, query_id: _query_id, amount: _amount, sender: _sender, forward_payload: _forward_payload };
 }
 
-function storeTupleTokenNotification(source: TokenNotification) {
+function storeTupleJettonNotify(source: JettonNotify) {
     let builder = new TupleBuilder();
-    builder.writeNumber(source.queryId);
+    builder.writeNumber(source.query_id);
     builder.writeNumber(source.amount);
-    builder.writeAddress(source.from);
-    builder.writeSlice(source.forwardPayload);
+    builder.writeAddress(source.sender);
+    builder.writeSlice(source.forward_payload);
     return builder.build();
 }
 
-function dictValueParserTokenNotification(): DictionaryValue<TokenNotification> {
+function dictValueParserJettonNotify(): DictionaryValue<JettonNotify> {
     return {
         serialize: (src, buidler) => {
-            buidler.storeRef(beginCell().store(storeTokenNotification(src)).endCell());
+            buidler.storeRef(beginCell().store(storeJettonNotify(src)).endCell());
         },
         parse: (src) => {
-            return loadTokenNotification(src.loadRef().beginParse());
+            return loadJettonNotify(src.loadRef().beginParse());
         }
     }
 }
@@ -925,8 +925,8 @@ function initGarantWallet_init_args(src: GarantWallet_init_args) {
 }
 
 async function GarantWallet_init(owner: Address, amount: bigint, isTon: boolean, nftAddress: Address) {
-    const __code = Cell.fromBase64('te6ccgECGQEABTUAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCFAQFAgFYEBEE4O2i7fsBkjB/4HAh10nCH5UwINcLH94gghBzYtCcuo64MNMfAYIQc2LQnLry4IHTP/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFQTAxAjbBTgIMAAItdJwSGw4wIgghCUapi2uuMCwAAGBwgJAKbI+EMBzH8BygBVMFBDINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WAfoCEsoAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFsntVAOSMDIjwACPvoEP1lEVvvL0+EFvJBAjXwMVFEMw2zxwyMlTEcjLAMnQJgRRWAQQOlCiyFVg2zzJ+EIBcIBCfwQDbW3bPFUCkVvifwwKDgE4W/hBbyQwMiPA/46MggCMGVElvhLy9Ns8kVvifwwBUDDTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH8LAYaOvfkBgvBCtfAE9yGyDUhe54NTZ6Y1wp0CNoSVsuXyeg+QZjlG0LqOlfhBbyRbggDZATIlxwXy9CPbPH/bMeCRMOJwDADeghAPin6lUAjLHxbLP1AE+gJYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASBulTBwAcsBjh4g10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbiIW6zlX8BygDMlHAyygDiAfoCAc8WATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPA4CQnDIyVMRyMsAydAoEEVVIMhVUNs8yXCAQiMDf1UwbW3bPA0OAMKCEF/MPRRQB8sfFcs/UAMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WIW6zlX8BygDMlHAyygDiAfoCAc8WAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AA8AmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwCASASEwIBSBcYAhG07Ftnm2eNiJAUFQCVt3owTgudh6ullc9j0J2HOslQo2zQThO6xqWlbI+WZFp15b++LEcwTgQKuANwDOxymcsHVcjktlhwThOy6ctWadluZ0HSzbKM3RSQAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfoA0gD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIFEMwbBTg+CjXCwqDCbry4IkWAAhUcyEjAJr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAYEBAdcA0gD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIFEMwBNFVAgARsK+7UTQ0gABgAHWybuNDVpcGZzOi8vUW1jU0ptWFR1cnpMOVY3TDJHcXRnWG5DVVVqQnpHQTZFSnJaZlNpblNtZE1qTYIA==');
-    const __system = Cell.fromBase64('te6cckECGwEABT8AAQHAAQEFoT0hAgEU/wD0pBP0vPLICwMCAWIMBAIBWAgFAgFIBwYAdbJu40NWlwZnM6Ly9RbWNTSm1YVHVyekw5VjdMMkdxdGdYbkNVVWpCekdBNkVKclpmU2luU21kTWpNggABGwr7tRNDSAAGACASAKCQCVt3owTgudh6ullc9j0J2HOslQo2zQThO6xqWlbI+WZFp15b++LEcwTgQKuANwDOxymcsHVcjktlhwThOy6ctWadluZ0HSzbKM3RSQAhG07Ftnm2eNiJAZCwAIVHMhIwN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLgghkODQCmyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgH6AhLKAAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbJ7VQE4O2i7fsBkjB/4HAh10nCH5UwINcLH94gghBzYtCcuo64MNMfAYIQc2LQnLry4IHTP/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFQTAxAjbBTgIMAAItdJwSGw4wIgghCUapi2uuMCwAATEhAPAYaOvfkBgvBCtfAE9yGyDUhe54NTZ6Y1wp0CNoSVsuXyeg+QZjlG0LqOlfhBbyRbggDZATIlxwXy9CPbPH/bMeCRMOJwFQFQMNMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8fxEBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8FgE4W/hBbyQwMiPA/46MggCMGVElvhLy9Ns8kVvifxUDkjAyI8AAj76BD9ZRFb7y9PhBbyQQI18DFRRDMNs8cMjJUxHIywDJ0CYEUVgEEDpQoshVYNs8yfhCAXCAQn8EA21t2zxVApFb4n8VFBYA3oIQD4p+pVAIyx8Wyz9QBPoCWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEgbpUwcAHLAY4eINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8W4iFus5V/AcoAzJRwMsoA4gH6AgHPFgJCcMjJUxHIywDJ0CgQRVUgyFVQ2zzJcIBCIwN/VTBtbds8GBYByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAFwCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzADCghBfzD0UUAfLHxXLP1ADINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFiFus5V/AcoAzJRwMsoA4gH6AgHPFgHA7UTQ1AH4Y9IAAY5I+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6ANIA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBRDMGwU4Pgo1wsKgwm68uCJGgCa+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAGBAQHXANIA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBRDMATRVQIFAIhn');
+    const __code = Cell.fromBase64('te6ccgECGAEABYgAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCEwQFAgFYDxADzu2i7fsBkjB/4HAh10nCH5UwINcLH94gghBzYtCcuuMCIMAAItdJwSGwklt/4CCCEJRqmLa6jqgw0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/4MAAkTDjDXAGCQcApsj4QwHMfwHKAFUwUEMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYB+gISygABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8Wye1UA/Qw0x8BghBzYtCcuvLggdM/+gD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIVBMDECNsFDAkwACPt4EP1lEmvhLy9BUUQzDbPMjJghAF9eEAyHABywDJ0CUQSFE3UTgDyFVg2zzJEDRBMPhCAX9t2zySXwPifwsICQP++QEggvBCtfAE9yGyDUhe54NTZ6Y1wp0CNoSVsuXyeg+QZjlG0LqPNDD4QW8kW4IA2QEyJccF8vRwyMlTEcjLAMnQJ1E4QTPIVVDbPMlwgEIjA39VMG1t2zx/2zHggvDSIeoHfpzRSZvhxQ/kIJjml3qXGN7ckYFtbt4nrq0JmwwNCgDeghAPin6lUAjLHxbLP1AE+gJYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASBulTBwAcsBjh4g10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbiIW6zlX8BygDMlHAyygDiAfoCAc8WATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPA0CVrqPJ/hBbyQwMiPA/48WgR9mUSW+EvL0U0Nyf1UgbW1t2zzbPJFb4n/bMeANCwJUcMjJghAF9eEAIsjLAMnQJBBFVSDIVVDbPMmCEB3NZQByIwN/VTBtbds8DA0AwoIQX8w9FFAHyx8Vyz9QAyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYhbrOVfwHKAMyUcDLKAOIB+gIBzxYByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsADgCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAIBIBESAgFIFhcCEbTsW2ebZ42IkBMUAJW3ejBOC52Hq6WVz2PQnYc6yVCjbNBOE7rGpaVsj5ZkWnXlv74sRzBOBAq4A3AM7HKZywdVyOS2WHBOE7Lpy1Zp2W5nQdLNsozdFJABwO1E0NQB+GPSAAGOSPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+gDSAPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgUQzBsFOD4KNcLCoMJuvLgiRUACFRzISMAmvpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgBgQEB1wDSAPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgUQzAE0VUCABGwr7tRNDSAAGAAdbJu40NWlwZnM6Ly9RbWJNdWRFemVKWFZOcjRtRm1Od2k3b1JwajV5RlpXcHZZVWN1cmE4bkEzckFngg');
+    const __system = Cell.fromBase64('te6cckECGgEABZIAAQHAAQEFoT0hAgEU/wD0pBP0vPLICwMCAWIMBAIBWAgFAgFIBwYAdbJu40NWlwZnM6Ly9RbWJNdWRFemVKWFZOcjRtRm1Od2k3b1JwajV5RlpXcHZZVWN1cmE4bkEzckFnggABGwr7tRNDSAAGACASAKCQCVt3owTgudh6ullc9j0J2HOslQo2zQThO6xqWlbI+WZFp15b++LEcwTgQKuANwDOxymcsHVcjktlhwThOy6ctWadluZ0HSzbKM3RSQAhG07Ftnm2eNiJAYCwAIVHMhIwN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLgghgODQCmyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgH6AhLKAAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbJ7VQDzu2i7fsBkjB/4HAh10nCH5UwINcLH94gghBzYtCcuuMCIMAAItdJwSGwklt/4CCCEJRqmLa6jqgw0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/4MAAkTDjDXAREg8D/vkBIILwQrXwBPchsg1IXueDU2emNcKdAjaElbLl8noPkGY5RtC6jzQw+EFvJFuCANkBMiXHBfL0cMjJUxHIywDJ0CdROEEzyFVQ2zzJcIBCIwN/VTBtbds8f9sx4ILw0iHqB36c0Umb4cUP5CCY5pd6lxje3JGBbW7eJ66tCZsXFRACVrqPJ/hBbyQwMiPA/48WgR9mUSW+EvL0U0Nyf1UgbW1t2zzbPJFb4n/bMeAVFAP0MNMfAYIQc2LQnLry4IHTP/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFQTAxAjbBQwJMAAj7eBD9ZRJr4S8vQVFEMw2zzIyYIQBfXhAMhwAcsAydAlEEhRN1E4A8hVYNs8yRA0QTD4QgF/bds8kl8D4n8UExIBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8FQDeghAPin6lUAjLHxbLP1AE+gJYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASBulTBwAcsBjh4g10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbiIW6zlX8BygDMlHAyygDiAfoCAc8WAlRwyMmCEAX14QAiyMsAydAkEEVVIMhVUNs8yYIQHc1lAHIjA39VMG1t2zwXFQHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAWAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAMKCEF/MPRRQB8sfFcs/UAMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WIW6zlX8BygDMlHAyygDiAfoCAc8WAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfoA0gD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIFEMwbBTg+CjXCwqDCbry4IkZAJr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAYEBAdcA0gD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIFEMwBNFVAm5KYME=');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -961,7 +961,7 @@ const GarantWallet_errors: { [key: number]: { message: string } } = {
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
     4054: { message: `Not enougth jettons` },
-    35865: { message: `Not enougth tons` },
+    8038: { message: `Not enougth TONs` },
     55553: { message: `Forbidden` },
 }
 
@@ -974,7 +974,7 @@ const GarantWallet_types: ABIType[] = [
     {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"TokenTransfer","header":260734629,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"response_destination","type":{"kind":"simple","type":"address","optional":true}},{"name":"custom_payload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forward_ton_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"NftTransfer","header":1607220500,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"new_owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"response_destination","type":{"kind":"simple","type":"address","optional":false}},{"name":"custom_payload","type":{"kind":"simple","type":"cell","optional":true}},{"name":"forward_amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
-    {"name":"TokenNotification","header":1935855772,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"from","type":{"kind":"simple","type":"address","optional":false}},{"name":"forwardPayload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
+    {"name":"JettonNotify","header":1935855772,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"sender","type":{"kind":"simple","type":"address","optional":false}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"OwnershipAssigned","header":85167505,"fields":[{"name":"query_id","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"prev_owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"forward_payload","type":{"kind":"simple","type":"slice","optional":false,"format":"remainder"}}]},
     {"name":"Withdraw","header":976735757,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"jettonWalletAddress","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"WithdrawTon","header":4206811366,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
@@ -990,8 +990,9 @@ const GarantWallet_getters: ABIGetter[] = [
 ]
 
 const GarantWallet_receivers: ABIReceiver[] = [
-    {"receiver":"internal","message":{"kind":"typed","type":"TokenNotification"}},
+    {"receiver":"internal","message":{"kind":"typed","type":"JettonNotify"}},
     {"receiver":"internal","message":{"kind":"text","text":"Cancel"}},
+    {"receiver":"internal","message":{"kind":"text","text":"Buy"}},
     {"receiver":"internal","message":{"kind":"empty"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
@@ -1026,13 +1027,16 @@ export class GarantWallet implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: TokenNotification | 'Cancel' | null | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: JettonNotify | 'Cancel' | 'Buy' | null | Deploy) {
         
         let body: Cell | null = null;
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'TokenNotification') {
-            body = beginCell().store(storeTokenNotification(message)).endCell();
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'JettonNotify') {
+            body = beginCell().store(storeJettonNotify(message)).endCell();
         }
         if (message === 'Cancel') {
+            body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
+        }
+        if (message === 'Buy') {
             body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
         }
         if (message === null) {
